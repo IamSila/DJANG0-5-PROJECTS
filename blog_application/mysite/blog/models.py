@@ -8,6 +8,7 @@ class Post(models.Model):
     publish = models.DateTimeField(default=timezone.now)
     class Meta:
         ordering = ['-publish']
+        indexes = [models.Index(fields=['-publish']),]
     def __str__():
         return self.title
     
