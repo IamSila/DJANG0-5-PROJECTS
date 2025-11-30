@@ -15,7 +15,6 @@ def post_list(request):
     posts = paginator.page(page_number)
     return render(request, "blog/post/list.html", {"posts": posts})
 
-
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(
         Post,
