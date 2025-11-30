@@ -4,12 +4,9 @@ from django.urls import reverse
 from django.utils import timezone
 
 # Create your models here.
-
-
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status=Post.Status.PUBLISHED)
-
 
 class Post(models.Model):
     class Status(models.TextChoices):
@@ -38,4 +35,9 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("blog:post_detail", args=[self.id])
+        return reverse("blog:post_detail", args=[
+            self.publish.year,
+            self.publish.month,
+            self.publish.day,
+            self.slug
+        ])
