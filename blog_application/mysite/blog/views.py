@@ -1,9 +1,11 @@
+from django.core.mail import send_mail
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-from django.core.mail import send_mail
-from .forms import EmailPostForm
+
+from .forms import CommentForm, EmailPostForm
 # Create your views here.
 from .models import Post
 
@@ -40,7 +42,15 @@ def post_detail(request, year, month, day, post):
         publish__day=day,
         slug=post,
     )
-    return render(request, "blog/post/detail.html", {"post": post})
+    # a list of comments for this post
+    comments = post.comments.filter(active=True)
+    # form for users to comment
+    form = CommentForm()
+    return render(
+        request,
+        "blog/post/detail.html",
+        {"post": post, "comments": comments, "form": form},
+    )
 
 
 def post_share(request, post_id):
@@ -54,16 +64,42 @@ def post_share(request, post_id):
             # form fields passed the validation
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(post.get_absolute_url())
-            subject = (f"{cd['name']} ({cd['email']})"
-                f"recommends you read {post.title}")
-            message = (f"Read {post.title} at {post_url}\n\n"
-                f"{cd['name']}\'s comments: {cd['comments']}")
+            subject = (
+                f"{cd['name']} ({cd['email']})" f"recommends you read {post.title}"
+            )
+            message = (
+                f"Read {post.title} at {post_url}\n\n"
+                f"{cd['name']}'s comments: {cd['comments']}"
+            )
             send_mail(
                 subject=subject,
                 message=message,
-                from_email = None,
-                recipient_list = [cd['to']])
+                from_email=None,
+                recipient_list=[cd["to"]],
+            )
             sent = True
         else:
             form = EmailPostForm()
-    return render(request, "blog/post/share.html", {"post": post, "form": form, "sent": sent})
+    return render(
+        request, "blog/post/share.html", {"post": post, "form": form, "sent": sent}
+    )
+
+
+
+@require_POST
+def post_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
+    comment = None
+    # a comment was posted
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        # assign comment to the post
+        comment.post = post
+        # save the comment to the database
+        comment.save()
+    return render(
+        request,
+        "blog/post/comment.html",
+        {"post": post, "form": form, "comment": comment},
+    )
