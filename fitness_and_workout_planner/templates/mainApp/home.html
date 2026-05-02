@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerFit Gym Management</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --gray: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            /* max-width: 1200px; */
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: var(--secondary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            margin-top: 20px;
+            gap: 20px;
+            min-height: calc(100vh - 180px);
+        }
+        
+        .sidebar {
+            flex: 0 0 250px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            height: fit-content;
+        }
+        
+        .sidebar h2 {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            color: var(--primary);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: var(--light);
+            color: var(--secondary);
+        }
+        
+        .content {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .content-header h2 {
+            color: var(--primary);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            text-align: center;
+            border-top: 4px solid var(--secondary);
+        }
+        
+        .card.members {
+            border-top-color: var(--secondary);
+        }
+        
+        .card.classes {
+            border-top-color: var(--success);
+        }
+        
+        .card.payments {
+            border-top-color: var(--warning);
+        }
+        
+        .card.trainers {
+            border-top-color: var(--danger);
+        }
+        
+        .card h3 {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table th {
+            background-color: var(--light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status.active {
+            background-color: #e8f6f3;
+            color: var(--success);
+        }
+        
+        .status.inactive {
+            background-color: #fdedec;
+            color: var(--danger);
+        }
+        
+        .status.pending {
+            background-color: #fef9e7;
+            color: var(--warning);
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            width: 500px;
+            max-width: 90%;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h3 {
+            color: var(--primary);
+        }
+        
+        .close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        
+        .close:hover {
+            color: var(--danger);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--secondary);
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        /* Page specific styles */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background-color: #ddd;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .calendar-header {
+            grid-column: 1 / -1;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .calendar-day {
+            background-color: white;
+            padding: 10px;
+            min-height: 100px;
+        }
+        
+        .calendar-day.header {
+            background-color: var(--light);
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .event {
+            background-color: var(--secondary);
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            margin-top: 5px;
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                flex: 1;
+                margin-bottom: 20px;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i>💪</i>
+                    <h1>PowerFit Gym</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-page="dashboard">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-page="members">Members</a></li>
+                        <li><a href="#" class="nav-link" data-page="classes">Classes</a></li>
+                        <li><a href="#" class="nav-link" data-page="trainers">Trainers</a></li>
+                        <li><a href="#" class="nav-link" data-page="payments">Payments</a></li>
+                        <li><a href="#" class="nav-link" data-page="reports">Reports</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard-page">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2>Quick Actions</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="sidebar-link active" data-page="dashboard">Dashboard</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="members">Add Member</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="classes">Schedule Class</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="payments">Process Payment</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="trainers">Manage Trainers</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="reports">Generate Reports</a></li>
+                        <li><a href="#">Settings</a></li>
+                    </ul>
+                    
+                    <h2>Upcoming Classes</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#">Yoga (10:00 AM)</a></li>
+                        <li><a href="#">Cardio (11:30 AM)</a></li>
+                        <li><a href="#">Strength Training (2:00 PM)</a></li>
+                        <li><a href="#">Pilates (4:30 PM)</a></li>
+                    </ul>
+                </aside>
+                
+                <main class="content">
+                    <div class="content-header">
+                        <h2>Dashboard Overview</h2>
+                        <button class="btn" id="addMemberBtn">Add New Member</button>
+                    </div>
+                    
+                    <div class="dashboard-cards">
+                        <div class="card members">
+                            <h3>Total Members</h3>
+                            <div class="number">247</div>
+                            <p>+12 this month</p>
+                        </div>
+                        <div class="card classes">
+                            <h3>Active Classes</h3>
+                            <div class="number">18</div>
+                            <p>4 classes today</p>
+                        </div>
+                        <div class="card payments">
+                            <h3>Pending Payments</h3>
+                            <div class="number">23</div>
+                            <p>$2,450 total</p>
+                        </div>
+                        <div class="card trainers">
+                            <h3>Certified Trainers</h3>
+                            <div class="number">9</div>
+                            <p>3 available now</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="members">Members</div>
+                        <div class="tab" data-tab="classes">Classes</div>
+                        <div class="tab" data-tab="payments">Payments</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="members-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Membership</th>
+                                    <th>Join Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>GF001</td>
+                                    <td>John Smith</td>
+                                    <td>Premium</td>
+                                    <td>2023-01-15</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>GF002</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>Basic</td>
+                                    <td>2023-02-20</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>GF003</td>
+                                    <td>Michael Brown</td>
+                                    <td>Premium</td>
+                                    <td>2023-03-10</td>
+                                    <td><span class="status inactive">Inactive</span></td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>GF004</td>
+                                    <td>Emily Davis</td>
+                                    <td>Student</td>
+                                    <td>2023-04-05</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="tab-content" id="classes-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Trainer</th>
+                                    <th>Time</th>
+                                    <th>Day</th>
+                                    <th>Capacity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Yoga</td>
+                                    <td>Lisa Wilson</td>
+                                    <td>10:00 AM</td>
+                                    <td>Mon, Wed, Fri</td>
+                                    <td>15/20</td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cardio Blast</td>
+                                    <td>Mark Thompson</td>
+                                    <td>11:30 AM</td>
+                                    <td>Tue, Thu</td>
+                                    <td>18/25</td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Strength Training</td>
+                                    <td>Robert Garcia</td>
+                                    <td>2:00 PM</td>
+                                    <td>Mon, Wed, Fri</td>
+                                    <td>12/15</td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="tab-content" id="payments-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-001</td>
+                                    <td>John Smith</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-15</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-002</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>$80.00</td>
+                                    <td>2023-06-10</td>
+                                    <td><span class="status active">Paid</span></td>
+                                    <td>
+                                        <button class="btn">View</button>
+                                        <button class="btn">Receipt</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-003</td>
+                                    <td>Michael Brown</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-05</td>
+                                    <td><span class="status inactive">Overdue</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+        </div>
+        
+        <!-- Members Page -->
+        <div class="page" id="members-page">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2>Member Actions</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="sidebar-link" data-page="dashboard">Back to Dashboard</a></li>
+                        <li><a href="#" id="addMemberBtn2">Add New Member</a></li>
+                        <li><a href="#">Import Members</a></li>
+                        <li><a href="#">Export Members</a></li>
+                        <li><a href="#">Membership Types</a></li>
+                    </ul>
+                    
+                    <h2>Filters</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#">All Members</a></li>
+                        <li><a href="#">Active Members</a></li>
+                        <li><a href="#">Inactive Members</a></li>
+                        <li><a href="#">Premium Members</a></li>
+                        <li><a href="#">Basic Members</a></li>
+                    </ul>
+                </aside>
+                
+                <main class="content">
+                    <div class="content-header">
+                        <h2>Member Management</h2>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Search members..." style="width: 200px; display: inline-block;">
+                            <button class="btn">Search</button>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Members</h3>
+                            <div class="value">247</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Active Members</h3>
+                            <div class="value">218</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>New This Month</h3>
+                            <div class="value">12</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Renewals Due</h3>
+                            <div class="value">18</div>
+                        </div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Membership</th>
+                                <th>Join Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>GF001</td>
+                                <td>John Smith</td>
+                                <td>john.smith@example.com</td>
+                                <td>(555) 123-4567</td>
+                                <td>Premium</td>
+                                <td>2023-01-15</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>GF002</td>
+                                <td>Sarah Johnson</td>
+                                <td>sarah.j@example.com</td>
+                                <td>(555) 987-6543</td>
+                                <td>Basic</td>
+                                <td>2023-02-20</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>GF003</td>
+                                <td>Michael Brown</td>
+                                <td>m.brown@example.com</td>
+                                <td>(555) 456-7890</td>
+                                <td>Premium</td>
+                                <td>2023-03-10</td>
+                                <td><span class="status inactive">Inactive</span></td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>GF004</td>
+                                <td>Emily Davis</td>
+                                <td>emily.davis@example.com</td>
+                                <td>(555) 234-5678</td>
+                                <td>Student</td>
+                                <td>2023-04-05</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>GF005</td>
+                                <td>David Wilson</td>
+                                <td>d.wilson@example.com</td>
+                                <td>(555) 345-6789</td>
+                                <td>Premium</td>
+                                <td>2023-05-12</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn">Previous</button>
+                        <button class="btn" style="margin: 0 10px;">1</button>
+                        <button class="btn">2</button>
+                        <button class="btn">3</button>
+                        <button class="btn">Next</button>
+                    </div>
+                </main>
+            </div>
+        </div>
+        
+        <!-- Classes Page -->
+        <div class="page" id="classes-page">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2>Class Actions</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="sidebar-link" data-page="dashboard">Back to Dashboard</a></li>
+                        <li><a href="#" id="addClassBtn">Schedule New Class</a></li>
+                        <li><a href="#">Class Categories</a></li>
+                        <li><a href="#">Room Management</a></li>
+                    </ul>
+                    
+                    <h2>Class Types</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#">All Classes</a></li>
+                        <li><a href="#">Yoga</a></li>
+                        <li><a href="#">Cardio</a></li>
+                        <li><a href="#">Strength Training</a></li>
+                        <li><a href="#">Pilates</a></li>
+                        <li><a href="#">Spinning</a></li>
+                    </ul>
+                </aside>
+                
+                <main class="content">
+                    <div class="content-header">
+                        <h2>Class Schedule</h2>
+                        <button class="btn" id="addClassBtn2">Schedule New Class</button>
+                    </div>
+                    
+                    <div class="calendar">
+                        <div class="calendar-header">June 2023</div>
+                        <div class="calendar-day header">Sun</div>
+                        <div class="calendar-day header">Mon</div>
+                        <div class="calendar-day header">Tue</div>
+                        <div class="calendar-day header">Wed</div>
+                        <div class="calendar-day header">Thu</div>
+                        <div class="calendar-day header">Fri</div>
+                        <div class="calendar-day header">Sat</div>
+                        
+                        <!-- Calendar days would be populated here -->
+                        <div class="calendar-day">28</div>
+                        <div class="calendar-day">29</div>
+                        <div class="calendar-day">30</div>
+                        <div class="calendar-day">31</div>
+                        <div class="calendar-day">1
+                            <div class="event">Yoga - 10:00 AM</div>
+                            <div class="event">Cardio - 11:30 AM</div>
+                        </div>
+                        <div class="calendar-day">2
+                            <div class="event">Strength - 2:00 PM</div>
+                        </div>
+                        <div class="calendar-day">3</div>
+                        <div class="calendar-day">4</div>
+                        <div class="calendar-day">5
+                            <div class="event">Yoga - 10:00 AM</div>
+                        </div>
+                        <div class="calendar-day">6
+                            <div class="event">Cardio - 11:30 AM</div>
+                        </div>
+                        <div class="calendar-day">7
+                            <div class="event">Yoga - 10:00 AM</div>
+                            <div class="event">Pilates - 4:30 PM</div>
+                        </div>
+                        <div class="calendar-day">8
+                            <div class="event">Cardio - 11:30 AM</div>
+                        </div>
+                        <div class="calendar-day">9
+                            <div class="event">Yoga - 10:00 AM</div>
+                            <div class="event">Strength - 2:00 PM</div>
+                        </div>
+                        <div class="calendar-day">10</div>
+                        <!-- More days would continue... -->
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px;">Upcoming Classes</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Trainer</th>
+                                <th>Date & Time</th>
+                                <th>Duration</th>
+                                <th>Capacity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Yoga</td>
+                                <td>Lisa Wilson</td>
+                                <td>Mon, Jun 5, 10:00 AM</td>
+                                <td>60 min</td>
+                                <td>15/20</td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Cancel</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Cardio Blast</td>
+                                <td>Mark Thompson</td>
+                                <td>Tue, Jun 6, 11:30 AM</td>
+                                <td>45 min</td>
+                                <td>18/25</td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Cancel</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Strength Training</td>
+                                <td>Robert Garcia</td>
+                                <td>Wed, Jun 7, 2:00 PM</td>
+                                <td>60 min</td>
+                                <td>12/15</td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Cancel</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Pilates</td>
+                                <td>Jennifer Lee</td>
+                                <td>Wed, Jun 7, 4:30 PM</td>
+                                <td>50 min</td>
+                                <td>10/12</td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Cancel</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </main>
+            </div>
+        </div>
+        
+        <!-- Trainers Page -->
+        <div class="page" id="trainers-page">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2>Trainer Actions</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="sidebar-link" data-page="dashboard">Back to Dashboard</a></li>
+                        <li><a href="#" id="addTrainerBtn">Add New Trainer</a></li>
+                        <li><a href="#">Certifications</a></li>
+                        <li><a href="#">Schedule</a></li>
+                    </ul>
+                    
+                    <h2>Specializations</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#">All Trainers</a></li>
+                        <li><a href="#">Yoga</a></li>
+                        <li><a href="#">Cardio</a></li>
+                        <li><a href="#">Strength</a></li>
+                        <li><a href="#">Pilates</a></li>
+                        <li><a href="#">Rehabilitation</a></li>
+                    </ul>
+                </aside>
+                
+                <main class="content">
+                    <div class="content-header">
+                        <h2>Trainer Management</h2>
+                        <button class="btn" id="addTrainerBtn2">Add New Trainer</button>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Trainers</h3>
+                            <div class="value">9</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Available Now</h3>
+                            <div class="value">3</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Certified</h3>
+                            <div class="value">7</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>On Leave</h3>
+                            <div class="value">1</div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <h3>Lisa Wilson</h3>
+                            <div class="number">Yoga</div>
+                            <p>5 classes/week</p>
+                            <button class="btn" style="margin-top: 10px;">View Schedule</button>
+                        </div>
+                        <div class="card">
+                            <h3>Mark Thompson</h3>
+                            <div class="number">Cardio</div>
+                            <p>4 classes/week</p>
+                            <button class="btn" style="margin-top: 10px;">View Schedule</button>
+                        </div>
+                        <div class="card">
+                            <h3>Robert Garcia</h3>
+                            <div class="number">Strength</div>
+                            <p>6 classes/week</p>
+                            <button class="btn" style="margin-top: 10px;">View Schedule</button>
+                        </div>
+                        <div class="card">
+                            <h3>Jennifer Lee</h3>
+                            <div class="number">Pilates</div>
+                            <p>3 classes/week</p>
+                            <button class="btn" style="margin-top: 10px;">View Schedule</button>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px;">All Trainers</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Specialization</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Lisa Wilson</td>
+                                <td>Yoga, Pilates</td>
+                                <td>lisa@powerfit.com</td>
+                                <td>(555) 111-2222</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mark Thompson</td>
+                                <td>Cardio, HIIT</td>
+                                <td>mark@powerfit.com</td>
+                                <td>(555) 222-3333</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Robert Garcia</td>
+                                <td>Strength, CrossFit</td>
+                                <td>robert@powerfit.com</td>
+                                <td>(555) 333-4444</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Jennifer Lee</td>
+                                <td>Pilates, Barre</td>
+                                <td>jennifer@powerfit.com</td>
+                                <td>(555) 444-5555</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </main>
+            </div>
+        </div>
+        
+        <!-- Payments Page -->
+        <div class="page" id="payments-page">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2>Payment Actions</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="sidebar-link" data-page="dashboard">Back to Dashboard</a></li>
+                        <li><a href="#" id="processPaymentBtn">Process Payment</a></li>
+                        <li><a href="#">Payment Methods</a></li>
+                        <li><a href="#">Invoice Settings</a></li>
+                    </ul>
+                    
+                    <h2>Filters</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#">All Payments</a></li>
+                        <li><a href="#">Pending</a></li>
+                        <li><a href="#">Paid</a></li>
+                        <li><a href="#">Overdue</a></li>
+                        <li><a href="#">This Month</a></li>
+                    </ul>
+                </aside>
+                
+                <main class="content">
+                    <div class="content-header">
+                        <h2>Payment Management</h2>
+                        <button class="btn" id="processPaymentBtn2">Process Payment</button>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Revenue</h3>
+                            <div class="value">$24,580</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Pending Payments</h3>
+                            <div class="value">$2,450</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>This Month</h3>
+                            <div class="value">$8,240</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Overdue</h3>
+                            <div class="value">$1,120</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="pending">Pending</div>
+                        <div class="tab" data-tab="paid">Paid</div>
+                        <div class="tab" data-tab="overdue">Overdue</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="pending-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-001</td>
+                                    <td>John Smith</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-15</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-004</td>
+                                    <td>David Wilson</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-18</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-005</td>
+                                    <td>Jessica Brown</td>
+                                    <td>$80.00</td>
+                                    <td>2023-06-20</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="tab-content" id="paid-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Paid Date</th>
+                                    <th>Method</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-002</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>$80.00</td>
+                                    <td>2023-06-05</td>
+                                    <td>Credit Card</td>
+                                    <td>
+                                        <button class="btn">View</button>
+                                        <button class="btn">Receipt</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-006</td>
+                                    <td>Michael Taylor</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-10</td>
+                                    <td>Bank Transfer</td>
+                                    <td>
+                                        <button class="btn">View</button>
+                                        <button class="btn">Receipt</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="tab-content" id="overdue-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Days Overdue</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-003</td>
+                                    <td>Michael Brown</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-05</td>
+                                    <td>10</td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-007</td>
+                                    <td>Amanda Clark</td>
+                                    <td>$60.00</td>
+                                    <td>2023-06-01</td>
+                                    <td>14</td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+        </div>
+        
+        <!-- Reports Page -->
+        <div class="page" id="reports-page">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2>Report Actions</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="sidebar-link" data-page="dashboard">Back to Dashboard</a></li>
+                        <li><a href="#" id="generateReportBtn">Generate Report</a></li>
+                        <li><a href="#">Export Data</a></li>
+                        <li><a href="#">Report History</a></li>
+                    </ul>
+                    
+                    <h2>Report Types</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#">Financial Reports</a></li>
+                        <li><a href="#">Member Reports</a></li>
+                        <li><a href="#">Attendance Reports</a></li>
+                        <li><a href="#">Class Reports</a></li>
+                        <li><a href="#">Trainer Reports</a></li>
+                    </ul>
+                </aside>
+                
+                <main class="content">
+                    <div class="content-header">
+                        <h2>Reports & Analytics</h2>
+                        <button class="btn" id="generateReportBtn2">Generate Report</button>
+                    </div>
+                    
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <h3>Monthly Revenue</h3>
+                            <div class="number">$8,240</div>
+                            <p>+12% from last month</p>
+                        </div>
+                        <div class="card">
+                            <h3>New Members</h3>
+                            <div class="number">12</div>
+                            <p>+2 from last month</p>
+                        </div>
+                        <div class="card">
+                            <h3>Class Attendance</h3>
+                            <div class="number">84%</div>
+                            <p>+5% from last month</p>
+                        </div>
+                        <div class="card">
+                            <h3>Member Retention</h3>
+                            <div class="number">92%</div>
+                            <p>+3% from last month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="financial">Financial</div>
+                        <div class="tab" data-tab="members">Members</div>
+                        <div class="tab" data-tab="attendance">Attendance</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="financial-tab">
+                        <h3>Revenue Overview</h3>
+                        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <p>Monthly revenue chart would be displayed here</p>
+                            <div style="height: 200px; display: flex; align-items: flex-end; gap: 10px; margin-top: 20px;">
+                                <div style="flex: 1; background-color: var(--secondary); height: 80%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--secondary); height: 65%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--secondary); height: 90%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--secondary); height: 75%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--secondary); height: 95%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--secondary); height: 60%; border-radius: 4px;"></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                                <span>Jan</span>
+                                <span>Feb</span>
+                                <span>Mar</span>
+                                <span>Apr</span>
+                                <span>May</span>
+                                <span>Jun</span>
+                            </div>
+                        </div>
+                        
+                        <h3>Payment Methods</h3>
+                        <div style="display: flex; gap: 20px; margin: 20px 0;">
+                            <div style="flex: 1; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h4>Credit Card</h4>
+                                <div class="value">65%</div>
+                            </div>
+                            <div style="flex: 1; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h4>Bank Transfer</h4>
+                                <div class="value">25%</div>
+                            </div>
+                            <div style="flex: 1; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h4>Cash</h4>
+                                <div class="value">10%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="members-tab">
+                        <h3>Member Growth</h3>
+                        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <p>Member growth chart would be displayed here</p>
+                            <div style="height: 200px; display: flex; align-items: flex-end; gap: 10px; margin-top: 20px;">
+                                <div style="flex: 1; background-color: var(--success); height: 40%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--success); height: 50%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--success); height: 60%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--success); height: 70%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--success); height: 85%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--success); height: 95%; border-radius: 4px;"></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                                <span>Jan</span>
+                                <span>Feb</span>
+                                <span>Mar</span>
+                                <span>Apr</span>
+                                <span>May</span>
+                                <span>Jun</span>
+                            </div>
+                        </div>
+                        
+                        <h3>Membership Types</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Membership Type</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                    <th>Revenue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Premium</td>
+                                    <td>120</td>
+                                    <td>48.6%</td>
+                                    <td>$14,400</td>
+                                </tr>
+                                <tr>
+                                    <td>Basic</td>
+                                    <td>85</td>
+                                    <td>34.4%</td>
+                                    <td>$6,800</td>
+                                </tr>
+                                <tr>
+                                    <td>Student</td>
+                                    <td>42</td>
+                                    <td>17.0%</td>
+                                    <td>$2,520</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="tab-content" id="attendance-tab">
+                        <h3>Class Attendance</h3>
+                        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <p>Class attendance chart would be displayed here</p>
+                            <div style="height: 200px; display: flex; align-items: flex-end; gap: 10px; margin-top: 20px;">
+                                <div style="flex: 1; background-color: var(--warning); height: 90%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--warning); height: 75%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--warning); height: 85%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--warning); height: 70%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--warning); height: 95%; border-radius: 4px;"></div>
+                                <div style="flex: 1; background-color: var(--warning); height: 80%; border-radius: 4px;"></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                                <span>Yoga</span>
+                                <span>Cardio</span>
+                                <span>Strength</span>
+                                <span>Pilates</span>
+                                <span>Spinning</span>
+                                <span>HIIT</span>
+                            </div>
+                        </div>
+                        
+                        <h3>Peak Hours</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time Slot</th>
+                                    <th>Average Attendance</th>
+                                    <th>Most Popular Class</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>6:00 - 8:00 AM</td>
+                                    <td>42</td>
+                                    <td>Cardio Blast</td>
+                                </tr>
+                                <tr>
+                                    <td>8:00 - 10:00 AM</td>
+                                    <td>38</td>
+                                    <td>Yoga</td>
+                                </tr>
+                                <tr>
+                                    <td>10:00 - 12:00 PM</td>
+                                    <td>45</td>
+                                    <td>Strength Training</td>
+                                </tr>
+                                <tr>
+                                    <td>4:00 - 6:00 PM</td>
+                                    <td>68</td>
+                                    <td>HIIT</td>
+                                </tr>
+                                <tr>
+                                    <td>6:00 - 8:00 PM</td>
+                                    <td>52</td>
+                                    <td>Pilates</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div class="modal" id="addMemberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Member</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="memberForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="membershipType">Membership Type</label>
+                    <select id="membershipType" class="form-control" required>
+                        <option value="">Select Membership</option>
+                        <option value="basic">Basic ($80/month)</option>
+                        <option value="premium">Premium ($120/month)</option>
+                        <option value="student">Student ($60/month)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="joinDate">Join Date</label>
+                    <input type="date" id="joinDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Add Member</button>
+                    <button type="button" class="btn btn-danger" id="cancelMemberBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Add Class Modal -->
+    <div class="modal" id="addClassModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Schedule New Class</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="classForm">
+                <div class="form-group">
+                    <label for="className">Class Name</label>
+                    <input type="text" id="className" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="classTrainer">Trainer</label>
+                    <select id="classTrainer" class="form-control" required>
+                        <option value="">Select Trainer</option>
+                        <option value="lisa">Lisa Wilson</option>
+                        <option value="mark">Mark Thompson</option>
+                        <option value="robert">Robert Garcia</option>
+                        <option value="jennifer">Jennifer Lee</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="classDate">Date</label>
+                        <input type="date" id="classDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="classTime">Time</label>
+                        <input type="time" id="classTime" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="classDuration">Duration (minutes)</label>
+                    <input type="number" id="classDuration" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="classCapacity">Capacity</label>
+                    <input type="number" id="classCapacity" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Schedule Class</button>
+                    <button type="button" class="btn btn-danger" id="cancelClassBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Process Payment Modal -->
+    <div class="modal" id="processPaymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Process Payment</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="paymentMember">Member</label>
+                    <select id="paymentMember" class="form-control" required>
+                        <option value="">Select Member</option>
+                        <option value="john">John Smith</option>
+                        <option value="sarah">Sarah Johnson</option>
+                        <option value="michael">Michael Brown</option>
+                        <option value="emily">Emily Davis</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentAmount">Amount</label>
+                    <input type="number" id="paymentAmount" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod" class="form-control" required>
+                        <option value="">Select Method</option>
+                        <option value="credit">Credit Card</option>
+                        <option value="debit">Debit Card</option>
+                        <option value="cash">Cash</option>
+                        <option value="transfer">Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentDate">Payment Date</label>
+                    <input type="date" id="paymentDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Process Payment</button>
+                    <button type="button" class="btn btn-danger" id="cancelPaymentBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 PowerFit Gym Management System. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Page navigation functionality
+        document.querySelectorAll('.nav-link, .sidebar-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = e.target.getAttribute('data-page');
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show selected page
+                document.getElementById(`${pageId}-page`).classList.add('active');
+                
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(navLink => {
+                    navLink.classList.remove('active');
+                });
+                e.target.classList.add('active');
+            });
+        });
+        
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                const parent = tab.closest('.tabs');
+                parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                parent.parentElement.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                parent.parentElement.querySelector(`#${tabId}-tab`).classList.add('active');
+            });
+        });
+        
+        // Modal functionality
+        const addMemberBtn = document.getElementById('addMemberBtn');
+        const addMemberBtn2 = document.getElementById('addMemberBtn2');
+        const addMemberModal = document.getElementById('addMemberModal');
+        const addClassBtn = document.getElementById('addClassBtn');
+        const addClassBtn2 = document.getElementById('addClassBtn2');
+        const addClassModal = document.getElementById('addClassModal');
+        const processPaymentBtn = document.getElementById('processPaymentBtn');
+        const processPaymentBtn2 = document.getElementById('processPaymentBtn2');
+        const processPaymentModal = document.getElementById('processPaymentModal');
+        
+        const closeButtons = document.querySelectorAll('.close');
+        const cancelMemberBtn = document.getElementById('cancelMemberBtn');
+        const cancelClassBtn = document.getElementById('cancelClassBtn');
+        const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+        
+        // Add Member Modal
+        addMemberBtn.addEventListener('click', () => {
+            addMemberModal.style.display = 'flex';
+        });
+        
+        addMemberBtn2.addEventListener('click', () => {
+            addMemberModal.style.display = 'flex';
+        });
+        
+        // Add Class Modal
+        addClassBtn.addEventListener('click', () => {
+            addClassModal.style.display = 'flex';
+        });
+        
+        addClassBtn2.addEventListener('click', () => {
+            addClassModal.style.display = 'flex';
+        });
+        
+        // Process Payment Modal
+        processPaymentBtn.addEventListener('click', () => {
+            processPaymentModal.style.display = 'flex';
+        });
+        
+        processPaymentBtn2.addEventListener('click', () => {
+            processPaymentModal.style.display = 'flex';
+        });
+        
+        // Close modals
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                addMemberModal.style.display = 'none';
+                addClassModal.style.display = 'none';
+                processPaymentModal.style.display = 'none';
+            });
+        });
+        
+        cancelMemberBtn.addEventListener('click', () => {
+            addMemberModal.style.display = 'none';
+        });
+        
+        cancelClassBtn.addEventListener('click', () => {
+            addClassModal.style.display = 'none';
+        });
+        
+        cancelPaymentBtn.addEventListener('click', () => {
+            processPaymentModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === addMemberModal) {
+                addMemberModal.style.display = 'none';
+            }
+            if (e.target === addClassModal) {
+                addClassModal.style.display = 'none';
+            }
+            if (e.target === processPaymentModal) {
+                processPaymentModal.style.display = 'none';
+            }
+        });
+        
+        // Form submissions
+        document.getElementById('memberForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Member added successfully!');
+            addMemberModal.style.display = 'none';
+            document.getElementById('memberForm').reset();
+        });
+        
+        document.getElementById('classForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Class scheduled successfully!');
+            addClassModal.style.display = 'none';
+            document.getElementById('classForm').reset();
+        });
+        
+        document.getElementById('paymentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Payment processed successfully!');
+            processPaymentModal.style.display = 'none';
+            document.getElementById('paymentForm').reset();
+        });
+        
+        // Sample data for demonstration
+        const sampleMembers = [
+            { id: 'GF001', name: 'John Smith', membership: 'Premium', joinDate: '2023-01-15', status: 'active' },
+            { id: 'GF002', name: 'Sarah Johnson', membership: 'Basic', joinDate: '2023-02-20', status: 'active' },
+            { id: 'GF003', name: 'Michael Brown', membership: 'Premium', joinDate: '2023-03-10', status: 'inactive' },
+            { id: 'GF004', name: 'Emily Davis', membership: 'Student', joinDate: '2023-04-05', status: 'active' }
+        ];
+        
+        console.log('Gym Management System Loaded');
+        console.log('Sample Members:', sampleMembers);
+    </script>
+</body>
+</html>

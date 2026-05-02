@@ -1,0 +1,183 @@
+<div class="page" id="payments-page">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2>Payment Actions</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="sidebar-link" data-page="dashboard">Back to Dashboard</a></li>
+                        <li><a href="#" id="processPaymentBtn">Process Payment</a></li>
+                        <li><a href="#">Payment Methods</a></li>
+                        <li><a href="#">Invoice Settings</a></li>
+                    </ul>
+                    
+                    <h2>Filters</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#">All Payments</a></li>
+                        <li><a href="#">Pending</a></li>
+                        <li><a href="#">Paid</a></li>
+                        <li><a href="#">Overdue</a></li>
+                        <li><a href="#">This Month</a></li>
+                    </ul>
+                </aside>
+                
+                <main class="content">
+                    <div class="content-header">
+                        <h2>Payment Management</h2>
+                        <button class="btn" id="processPaymentBtn2">Process Payment</button>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Revenue</h3>
+                            <div class="value">$24,580</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Pending Payments</h3>
+                            <div class="value">$2,450</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>This Month</h3>
+                            <div class="value">$8,240</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Overdue</h3>
+                            <div class="value">$1,120</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="pending">Pending</div>
+                        <div class="tab" data-tab="paid">Paid</div>
+                        <div class="tab" data-tab="overdue">Overdue</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="pending-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-001</td>
+                                    <td>John Smith</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-15</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-004</td>
+                                    <td>David Wilson</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-18</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-005</td>
+                                    <td>Jessica Brown</td>
+                                    <td>$80.00</td>
+                                    <td>2023-06-20</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="tab-content" id="paid-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Paid Date</th>
+                                    <th>Method</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-002</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>$80.00</td>
+                                    <td>2023-06-05</td>
+                                    <td>Credit Card</td>
+                                    <td>
+                                        <button class="btn">View</button>
+                                        <button class="btn">Receipt</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-006</td>
+                                    <td>Michael Taylor</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-10</td>
+                                    <td>Bank Transfer</td>
+                                    <td>
+                                        <button class="btn">View</button>
+                                        <button class="btn">Receipt</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="tab-content" id="overdue-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Days Overdue</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-003</td>
+                                    <td>Michael Brown</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-05</td>
+                                    <td>10</td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-007</td>
+                                    <td>Amanda Clark</td>
+                                    <td>$60.00</td>
+                                    <td>2023-06-01</td>
+                                    <td>14</td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+        </div>
+        

@@ -1,0 +1,221 @@
+<div class="page active" id="dashboard-page">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2>Quick Actions</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="sidebar-link active" data-page="dashboard">Dashboard</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="members">Add Member</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="classes">Schedule Class</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="payments">Process Payment</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="trainers">Manage Trainers</a></li>
+                        <li><a href="#" class="sidebar-link" data-page="reports">Generate Reports</a></li>
+                        <li><a href="#">Settings</a></li>
+                    </ul>
+                    
+                    <h2>Upcoming Classes</h2>
+                    <ul class="sidebar-menu">
+                        <li><a href="#">Yoga (10:00 AM)</a></li>
+                        <li><a href="#">Cardio (11:30 AM)</a></li>
+                        <li><a href="#">Strength Training (2:00 PM)</a></li>
+                        <li><a href="#">Pilates (4:30 PM)</a></li>
+                    </ul>
+                </aside>
+                
+                <main class="content">
+                    <div class="content-header">
+                        <h2>Dashboard Overview</h2>
+                        <button class="btn" id="addMemberBtn">Add New Member</button>
+                    </div>
+                    
+                    <div class="dashboard-cards">
+                        <div class="card members">
+                            <h3>Total Members</h3>
+                            <div class="number">247</div>
+                            <p>+12 this month</p>
+                        </div>
+                        <div class="card classes">
+                            <h3>Active Classes</h3>
+                            <div class="number">18</div>
+                            <p>4 classes today</p>
+                        </div>
+                        <div class="card payments">
+                            <h3>Pending Payments</h3>
+                            <div class="number">23</div>
+                            <p>$2,450 total</p>
+                        </div>
+                        <div class="card trainers">
+                            <h3>Certified Trainers</h3>
+                            <div class="number">9</div>
+                            <p>3 available now</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="members">Members</div>
+                        <div class="tab" data-tab="classes">Classes</div>
+                        <div class="tab" data-tab="payments">Payments</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="members-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Membership</th>
+                                    <th>Join Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>GF001</td>
+                                    <td>John Smith</td>
+                                    <td>Premium</td>
+                                    <td>2023-01-15</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>GF002</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>Basic</td>
+                                    <td>2023-02-20</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>GF003</td>
+                                    <td>Michael Brown</td>
+                                    <td>Premium</td>
+                                    <td>2023-03-10</td>
+                                    <td><span class="status inactive">Inactive</span></td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>GF004</td>
+                                    <td>Emily Davis</td>
+                                    <td>Student</td>
+                                    <td>2023-04-05</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="tab-content" id="classes-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Trainer</th>
+                                    <th>Time</th>
+                                    <th>Day</th>
+                                    <th>Capacity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Yoga</td>
+                                    <td>Lisa Wilson</td>
+                                    <td>10:00 AM</td>
+                                    <td>Mon, Wed, Fri</td>
+                                    <td>15/20</td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cardio Blast</td>
+                                    <td>Mark Thompson</td>
+                                    <td>11:30 AM</td>
+                                    <td>Tue, Thu</td>
+                                    <td>18/25</td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Strength Training</td>
+                                    <td>Robert Garcia</td>
+                                    <td>2:00 PM</td>
+                                    <td>Mon, Wed, Fri</td>
+                                    <td>12/15</td>
+                                    <td>
+                                        <button class="btn">Edit</button>
+                                        <button class="btn btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="tab-content" id="payments-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-001</td>
+                                    <td>John Smith</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-15</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-002</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>$80.00</td>
+                                    <td>2023-06-10</td>
+                                    <td><span class="status active">Paid</span></td>
+                                    <td>
+                                        <button class="btn">View</button>
+                                        <button class="btn">Receipt</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-003</td>
+                                    <td>Michael Brown</td>
+                                    <td>$120.00</td>
+                                    <td>2023-06-05</td>
+                                    <td><span class="status inactive">Overdue</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Mark Paid</button>
+                                        <button class="btn">Remind</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+        </div>
