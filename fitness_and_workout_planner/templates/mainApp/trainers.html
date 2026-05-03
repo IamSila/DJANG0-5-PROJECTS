@@ -1,137 +1,143 @@
+{% extends 'mainApp/base.html' %} {% load static %} {% block trainers %}
 <div class="page" id="trainers-page">
-            <div class="main-content">
-                <aside class="sidebar">
-                    <h2>Trainer Actions</h2>
-                    <ul class="sidebar-menu">
-                        <li><a href="#" class="sidebar-link" data-page="dashboard">Back to Dashboard</a></li>
-                        <li><a href="#" id="addTrainerBtn">Add New Trainer</a></li>
-                        <li><a href="#">Certifications</a></li>
-                        <li><a href="#">Schedule</a></li>
-                    </ul>
-                    
-                    <h2>Specializations</h2>
-                    <ul class="sidebar-menu">
-                        <li><a href="#">All Trainers</a></li>
-                        <li><a href="#">Yoga</a></li>
-                        <li><a href="#">Cardio</a></li>
-                        <li><a href="#">Strength</a></li>
-                        <li><a href="#">Pilates</a></li>
-                        <li><a href="#">Rehabilitation</a></li>
-                    </ul>
-                </aside>
-                
-                <main class="content">
-                    <div class="content-header">
-                        <h2>Trainer Management</h2>
-                        <button class="btn" id="addTrainerBtn2">Add New Trainer</button>
-                    </div>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>Total Trainers</h3>
-                            <div class="value">9</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Available Now</h3>
-                            <div class="value">3</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Certified</h3>
-                            <div class="value">7</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>On Leave</h3>
-                            <div class="value">1</div>
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-cards">
-                        <div class="card">
-                            <h3>Lisa Wilson</h3>
-                            <div class="number">Yoga</div>
-                            <p>5 classes/week</p>
-                            <button class="btn" style="margin-top: 10px;">View Schedule</button>
-                        </div>
-                        <div class="card">
-                            <h3>Mark Thompson</h3>
-                            <div class="number">Cardio</div>
-                            <p>4 classes/week</p>
-                            <button class="btn" style="margin-top: 10px;">View Schedule</button>
-                        </div>
-                        <div class="card">
-                            <h3>Robert Garcia</h3>
-                            <div class="number">Strength</div>
-                            <p>6 classes/week</p>
-                            <button class="btn" style="margin-top: 10px;">View Schedule</button>
-                        </div>
-                        <div class="card">
-                            <h3>Jennifer Lee</h3>
-                            <div class="number">Pilates</div>
-                            <p>3 classes/week</p>
-                            <button class="btn" style="margin-top: 10px;">View Schedule</button>
-                        </div>
-                    </div>
-                    
-                    <h3 style="margin: 30px 0 15px;">All Trainers</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Specialization</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Lisa Wilson</td>
-                                <td>Yoga, Pilates</td>
-                                <td>lisa@powerfit.com</td>
-                                <td>(555) 111-2222</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Mark Thompson</td>
-                                <td>Cardio, HIIT</td>
-                                <td>mark@powerfit.com</td>
-                                <td>(555) 222-3333</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Robert Garcia</td>
-                                <td>Strength, CrossFit</td>
-                                <td>robert@powerfit.com</td>
-                                <td>(555) 333-4444</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Jennifer Lee</td>
-                                <td>Pilates, Barre</td>
-                                <td>jennifer@powerfit.com</td>
-                                <td>(555) 444-5555</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </main>
-            </div>
+  <div class="main-content">
+    <aside class="sidebar">
+      <h2>Trainer Actions</h2>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="#" class="sidebar-link" data-page="dashboard"
+            >Back to Dashboard</a
+          >
+        </li>
+        <li><a href="#" id="addTrainerBtn">Add New Trainer</a></li>
+        <li><a href="#">Certifications</a></li>
+        <li><a href="#">Schedule</a></li>
+      </ul>
+
+      <h2>Specializations</h2>
+      <ul class="sidebar-menu">
+        <li><a href="#">All Trainers</a></li>
+        <li><a href="#">Yoga</a></li>
+        <li><a href="#">Cardio</a></li>
+        <li><a href="#">Strength</a></li>
+        <li><a href="#">Pilates</a></li>
+        <li><a href="#">Rehabilitation</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <div class="content-header">
+        <h2>Trainer Management</h2>
+        <button class="btn" id="addTrainerBtn2">Add New Trainer</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Trainers</h3>
+          <div class="value">9</div>
         </div>
-        
+        <div class="stat-card">
+          <h3>Available Now</h3>
+          <div class="value">3</div>
+        </div>
+        <div class="stat-card">
+          <h3>Certified</h3>
+          <div class="value">7</div>
+        </div>
+        <div class="stat-card">
+          <h3>On Leave</h3>
+          <div class="value">1</div>
+        </div>
+      </div>
+
+      <div class="dashboard-cards">
+        <div class="card">
+          <h3>Lisa Wilson</h3>
+          <div class="number">Yoga</div>
+          <p>5 classes/week</p>
+          <button class="btn" style="margin-top: 10px">View Schedule</button>
+        </div>
+        <div class="card">
+          <h3>Mark Thompson</h3>
+          <div class="number">Cardio</div>
+          <p>4 classes/week</p>
+          <button class="btn" style="margin-top: 10px">View Schedule</button>
+        </div>
+        <div class="card">
+          <h3>Robert Garcia</h3>
+          <div class="number">Strength</div>
+          <p>6 classes/week</p>
+          <button class="btn" style="margin-top: 10px">View Schedule</button>
+        </div>
+        <div class="card">
+          <h3>Jennifer Lee</h3>
+          <div class="number">Pilates</div>
+          <p>3 classes/week</p>
+          <button class="btn" style="margin-top: 10px">View Schedule</button>
+        </div>
+      </div>
+
+      <h3 style="margin: 30px 0 15px">All Trainers</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Specialization</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Lisa Wilson</td>
+            <td>Yoga, Pilates</td>
+            <td>lisa@powerfit.com</td>
+            <td>(555) 111-2222</td>
+            <td><span class="status active">Active</span></td>
+            <td>
+              <button class="btn">Edit</button>
+              <button class="btn btn-danger">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Mark Thompson</td>
+            <td>Cardio, HIIT</td>
+            <td>mark@powerfit.com</td>
+            <td>(555) 222-3333</td>
+            <td><span class="status active">Active</span></td>
+            <td>
+              <button class="btn">Edit</button>
+              <button class="btn btn-danger">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Robert Garcia</td>
+            <td>Strength, CrossFit</td>
+            <td>robert@powerfit.com</td>
+            <td>(555) 333-4444</td>
+            <td><span class="status active">Active</span></td>
+            <td>
+              <button class="btn">Edit</button>
+              <button class="btn btn-danger">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Jennifer Lee</td>
+            <td>Pilates, Barre</td>
+            <td>jennifer@powerfit.com</td>
+            <td>(555) 444-5555</td>
+            <td><span class="status active">Active</span></td>
+            <td>
+              <button class="btn">Edit</button>
+              <button class="btn btn-danger">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</div>
+
+{% endblock trainers %}

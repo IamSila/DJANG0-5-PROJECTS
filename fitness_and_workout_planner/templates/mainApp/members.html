@@ -1,6 +1,13 @@
+{% extends 'mainApp/base.html' %}
+{% load static %}
+
+
+{% block members %}
+    
+
 <div class="page" id="members-page">
-            <div class="main-content">
-                <aside class="sidebar">
+    <div class="main-content">
+        <aside class="sidebar">
                     <h2>Member Actions</h2>
                     <ul class="sidebar-menu">
                         <li><a href="#" class="sidebar-link" data-page="dashboard">Back to Dashboard</a></li>
@@ -18,18 +25,18 @@
                         <li><a href="#">Premium Members</a></li>
                         <li><a href="#">Basic Members</a></li>
                     </ul>
-                </aside>
+        </aside>
                 
-                <main class="content">
-                    <div class="content-header">
-                        <h2>Member Management</h2>
-                        <div>
-                            <input type="text" class="form-control" placeholder="Search members..." style="width: 200px; display: inline-block;">
-                            <button class="btn">Search</button>
-                        </div>
-                    </div>
+        <main class="content">
+            <div class="content-header">
+                <h2>Member Management</h2>
+                <div>
+                    <input type="text" class="form-control" placeholder="Search members..." style="width: 200px; display: inline-block;">
+                    <button class="btn">Search</button>
+                </div>
+            </div>
                     
-                    <div class="stats-grid">
+        <div class="stats-grid">
                         <div class="stat-card">
                             <h3>Total Members</h3>
                             <div class="value">247</div>
@@ -46,9 +53,9 @@
                             <h3>Renewals Due</h3>
                             <div class="value">18</div>
                         </div>
-                    </div>
+        </div>
                     
-                    <table>
+        <table>
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -128,16 +135,18 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+        </table>
                     
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button class="btn">Previous</button>
-                        <button class="btn" style="margin: 0 10px;">1</button>
-                        <button class="btn">2</button>
-                        <button class="btn">3</button>
-                        <button class="btn">Next</button>
-                    </div>
-                </main>
-            </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn">Previous</button>
+            <button class="btn" style="margin: 0 10px;">1</button>
+            <button class="btn">2</button>
+            <button class="btn">3</button>
+            <button class="btn">Next</button>
         </div>
-        
+        </main>
+    </div>
+</div>
+    
+
+{% endblock members %}
