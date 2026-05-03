@@ -1,5 +1,8 @@
 from django.shortcuts import render
-
+# utils
+from django.utils import timezone
+# models
+from .models import Member
 # Create your views here.
 
 
@@ -18,7 +21,15 @@ def dashboard(request):
 
 # members page
 def members(request):
-  context = {}
+  members = Member.objects.all()
+
+  # statistics
+  total_members = Member.objects.count()
+  active_members = Member.objects.filter(status='ACTIVE').count()
+  now = timezone.now()
+  new_this_month = Member.objects.filter(join_date__month = now.month).count()
+
+  context = {"members":members, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month}
   return render(request, 'mainApp/members.html', context)
 
 

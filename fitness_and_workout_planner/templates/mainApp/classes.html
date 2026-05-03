@@ -1,149 +1,134 @@
-{% extends 'mainApp/base.html' %} {% load static %} {% block classes %}
-<div class="page" id="classes-page">
-  <div class="main-content">
+{% extends 'mainApp/base.html' %}
+
+{% block content %}
+<div class="main-content">
     <aside class="sidebar">
-      <h2>Class Actions</h2>
-      <ul class="sidebar-menu">
-        <li>
-          <a href="#" class="sidebar-link" data-page="dashboard"
-            >Back to Dashboard</a
-          >
-        </li>
-        <li><a href="#" id="addClassBtn">Schedule New Class</a></li>
-        <li><a href="#">Class Categories</a></li>
-        <li><a href="#">Room Management</a></li>
-      </ul>
-
-      <h2>Class Types</h2>
-      <ul class="sidebar-menu">
-        <li><a href="#">All Classes</a></li>
-        <li><a href="#">Yoga</a></li>
-        <li><a href="#">Cardio</a></li>
-        <li><a href="#">Strength Training</a></li>
-        <li><a href="#">Pilates</a></li>
-        <li><a href="#">Spinning</a></li>
-      </ul>
+        <h2>Class Actions</h2>
+        <ul class="sidebar-menu">
+            <li><a href="{% url 'dashboard' %}">Back to Dashboard</a></li>
+            <li><a href="#" onclick="openModal('addClassModal'); return false;">Schedule New Class</a></li>
+            <li><a href="#">Class Categories</a></li>
+            <li><a href="#">Room Management</a></li>
+        </ul>
+        
+        <h2>Class Types</h2>
+        <ul class="sidebar-menu">
+            <li><a href="#">All Classes</a></li>
+            <li><a href="#">Yoga</a></li>
+            <li><a href="#">Cardio</a></li>
+            <li><a href="#">Strength Training</a></li>
+            <li><a href="#">Pilates</a></li>
+            <li><a href="#">Spinning</a></li>
+        </ul>
     </aside>
-
+    
     <main class="content">
-      <div class="content-header">
-        <h2>Class Schedule</h2>
-        <button class="btn" id="addClassBtn2">Schedule New Class</button>
-      </div>
-
-      <div class="calendar">
-        <div class="calendar-header">June 2023</div>
-        <div class="calendar-day header">Sun</div>
-        <div class="calendar-day header">Mon</div>
-        <div class="calendar-day header">Tue</div>
-        <div class="calendar-day header">Wed</div>
-        <div class="calendar-day header">Thu</div>
-        <div class="calendar-day header">Fri</div>
-        <div class="calendar-day header">Sat</div>
-
-        <!-- Calendar days would be populated here -->
-        <div class="calendar-day">28</div>
-        <div class="calendar-day">29</div>
-        <div class="calendar-day">30</div>
-        <div class="calendar-day">31</div>
-        <div class="calendar-day">
-          1
-          <div class="event">Yoga - 10:00 AM</div>
-          <div class="event">Cardio - 11:30 AM</div>
+        <div class="content-header">
+            <h2>Class Schedule</h2>
+            <button class="btn" onclick="openModal('addClassModal')">Schedule New Class</button>
         </div>
-        <div class="calendar-day">
-          2
-          <div class="event">Strength - 2:00 PM</div>
+        
+        <div class="calendar">
+            <div class="calendar-header">{{ current_month|default:"June 2023" }}</div>
+            <div class="calendar-day header">Sun</div>
+            <div class="calendar-day header">Mon</div>
+            <div class="calendar-day header">Tue</div>
+            <div class="calendar-day header">Wed</div>
+            <div class="calendar-day header">Thu</div>
+            <div class="calendar-day header">Fri</div>
+            <div class="calendar-day header">Sat</div>
+            
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">29</div>
+            <div class="calendar-day">30</div>
+            <div class="calendar-day">31</div>
+            <div class="calendar-day">1
+                <div class="event">Yoga - 10:00 AM</div>
+                <div class="event">Cardio - 11:30 AM</div>
+            </div>
+            <div class="calendar-day">2
+                <div class="event">Strength - 2:00 PM</div>
+            </div>
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day">5
+                <div class="event">Yoga - 10:00 AM</div>
+            </div>
+            <div class="calendar-day">6
+                <div class="event">Cardio - 11:30 AM</div>
+            </div>
+            <div class="calendar-day">7
+                <div class="event">Yoga - 10:00 AM</div>
+                <div class="event">Pilates - 4:30 PM</div>
+            </div>
+            <div class="calendar-day">8
+                <div class="event">Cardio - 11:30 AM</div>
+            </div>
+            <div class="calendar-day">9
+                <div class="event">Yoga - 10:00 AM</div>
+                <div class="event">Strength - 2:00 PM</div>
+            </div>
+            <div class="calendar-day">10</div>
         </div>
-        <div class="calendar-day">3</div>
-        <div class="calendar-day">4</div>
-        <div class="calendar-day">
-          5
-          <div class="event">Yoga - 10:00 AM</div>
-        </div>
-        <div class="calendar-day">
-          6
-          <div class="event">Cardio - 11:30 AM</div>
-        </div>
-        <div class="calendar-day">
-          7
-          <div class="event">Yoga - 10:00 AM</div>
-          <div class="event">Pilates - 4:30 PM</div>
-        </div>
-        <div class="calendar-day">
-          8
-          <div class="event">Cardio - 11:30 AM</div>
-        </div>
-        <div class="calendar-day">
-          9
-          <div class="event">Yoga - 10:00 AM</div>
-          <div class="event">Strength - 2:00 PM</div>
-        </div>
-        <div class="calendar-day">10</div>
-        <!-- More days would continue... -->
-      </div>
-
-      <h3 style="margin: 30px 0 15px">Upcoming Classes</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Class</th>
-            <th>Trainer</th>
-            <th>Date & Time</th>
-            <th>Duration</th>
-            <th>Capacity</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Yoga</td>
-            <td>Lisa Wilson</td>
-            <td>Mon, Jun 5, 10:00 AM</td>
-            <td>60 min</td>
-            <td>15/20</td>
-            <td>
-              <button class="btn">Edit</button>
-              <button class="btn btn-danger">Cancel</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Cardio Blast</td>
-            <td>Mark Thompson</td>
-            <td>Tue, Jun 6, 11:30 AM</td>
-            <td>45 min</td>
-            <td>18/25</td>
-            <td>
-              <button class="btn">Edit</button>
-              <button class="btn btn-danger">Cancel</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Strength Training</td>
-            <td>Robert Garcia</td>
-            <td>Wed, Jun 7, 2:00 PM</td>
-            <td>60 min</td>
-            <td>12/15</td>
-            <td>
-              <button class="btn">Edit</button>
-              <button class="btn btn-danger">Cancel</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Pilates</td>
-            <td>Jennifer Lee</td>
-            <td>Wed, Jun 7, 4:30 PM</td>
-            <td>50 min</td>
-            <td>10/12</td>
-            <td>
-              <button class="btn">Edit</button>
-              <button class="btn btn-danger">Cancel</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        
+        <h3 style="margin: 30px 0 15px;">Upcoming Classes</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Class</th>
+                    <th>Trainer</th>
+                    <th>Date & Time</th>
+                    <th>Duration</th>
+                    <th>Capacity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for class in upcoming_classes %}
+                <tr>
+                    <td>{{ class.name }}</span></td>
+                    <td>{{ class.trainer }}</span></td>
+                    <td>{{ class.date_time }}</span></td>
+                    <td>{{ class.duration }} min</span></td>
+                    <td>{{ class.enrolled }}/{{ class.capacity }}</span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></span></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td>Yoga</span></td>
+                    <td>Lisa Wilson</span></td>
+                    <td>Mon, Jun 5, 10:00 AM</span></td>
+                    <td>60 min</span></td>
+                    <td>15/20</span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></span></td>
+                </tr>
+                <tr>
+                    <td>Cardio Blast</span></td>
+                    <td>Mark Thompson</span></td>
+                    <td>Tue, Jun 6, 11:30 AM</span></td>
+                    <td>45 min</span></td>
+                    <td>18/25</span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></span></td>
+                </tr>
+                <tr>
+                    <td>Strength Training</span></td>
+                    <td>Robert Garcia</span></td>
+                    <td>Wed, Jun 7, 2:00 PM</span></td>
+                    <td>60 min</span></td>
+                    <td>12/15</span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></span></td>
+                </tr>
+                <tr>
+                    <td>Pilates</span></td>
+                    <td>Jennifer Lee</span></td>
+                    <td>Wed, Jun 7, 4:30 PM</span></td>
+                    <td>50 min</span></td>
+                    <td>10/12</span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </main>
-  </div>
 </div>
-
-{% endblock classes %}
+{% endblock %}

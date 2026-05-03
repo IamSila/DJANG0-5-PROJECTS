@@ -1,142 +1,138 @@
 {% extends 'mainApp/base.html' %}
-{% load static %}
 
-
-{% block members %}
+{% block content %}
+<div class="main-content">
+    <aside class="sidebar">
+        <h2>Member Actions</h2>
+        <ul class="sidebar-menu">
+            <li><a href="{% url 'dashboard' %}">Back to Dashboard</a></li>
+            <li><a href="#" onclick="openModal('addMemberModal'); return false;">Add New Member</a></li>
+            <li><a href="#">Import Members</a></li>
+            <li><a href="#">Export Members</a></li>
+            <li><a href="#">Membership Types</a></li>
+        </ul>
+        
+        <h2>Filters</h2>
+        <ul class="sidebar-menu">
+            <li><a href="#">All Members</a></li>
+            <li><a href="#">Active Members</a></li>
+            <li><a href="#">Inactive Members</a></li>
+            <li><a href="#">Premium Members</a></li>
+            <li><a href="#">Basic Members</a></li>
+        </ul>
+    </aside>
     
-
-<div class="page" id="members-page">
-    <div class="main-content">
-        <aside class="sidebar">
-                    <h2>Member Actions</h2>
-                    <ul class="sidebar-menu">
-                        <li><a href="#" class="sidebar-link" data-page="dashboard">Back to Dashboard</a></li>
-                        <li><a href="#" id="addMemberBtn2">Add New Member</a></li>
-                        <li><a href="#">Import Members</a></li>
-                        <li><a href="#">Export Members</a></li>
-                        <li><a href="#">Membership Types</a></li>
-                    </ul>
-                    
-                    <h2>Filters</h2>
-                    <ul class="sidebar-menu">
-                        <li><a href="#">All Members</a></li>
-                        <li><a href="#">Active Members</a></li>
-                        <li><a href="#">Inactive Members</a></li>
-                        <li><a href="#">Premium Members</a></li>
-                        <li><a href="#">Basic Members</a></li>
-                    </ul>
-        </aside>
-                
-        <main class="content">
-            <div class="content-header">
-                <h2>Member Management</h2>
-                <div>
-                    <input type="text" class="form-control" placeholder="Search members..." style="width: 200px; display: inline-block;">
-                    <button class="btn">Search</button>
-                </div>
+    <main class="content">
+        <div class="content-header">
+            <h2>Member Management</h2>
+            <div>
+                <input type="text" class="form-control" placeholder="Search members..." style="width: 200px; display: inline-block;">
+                <button class="btn">Search</button>
             </div>
-                    
-        <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>Total Members</h3>
-                            <div class="value">247</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Active Members</h3>
-                            <div class="value">218</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>New This Month</h3>
-                            <div class="value">12</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Renewals Due</h3>
-                            <div class="value">18</div>
-                        </div>
         </div>
-                    
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Members</h3>
+                <div class="value">{{ total_members|default:"247" }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Active Members</h3>
+                <div class="value">{{ active_members|default:"218" }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>New This Month</h3>
+                <div class="value">{{ new_members|default:"12" }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Renewals Due</h3>
+                <div class="value">{{ renewals_due|default:"18" }}</div>
+            </div>
+        </div>
+        
         <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Membership</th>
-                                <th>Join Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>GF001</td>
-                                <td>John Smith</td>
-                                <td>john.smith@example.com</td>
-                                <td>(555) 123-4567</td>
-                                <td>Premium</td>
-                                <td>2023-01-15</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>GF002</td>
-                                <td>Sarah Johnson</td>
-                                <td>sarah.j@example.com</td>
-                                <td>(555) 987-6543</td>
-                                <td>Basic</td>
-                                <td>2023-02-20</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>GF003</td>
-                                <td>Michael Brown</td>
-                                <td>m.brown@example.com</td>
-                                <td>(555) 456-7890</td>
-                                <td>Premium</td>
-                                <td>2023-03-10</td>
-                                <td><span class="status inactive">Inactive</span></td>
-                                <td>
-                                    <button class="btn">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>GF004</td>
-                                <td>Emily Davis</td>
-                                <td>emily.davis@example.com</td>
-                                <td>(555) 234-5678</td>
-                                <td>Student</td>
-                                <td>2023-04-05</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>GF005</td>
-                                <td>David Wilson</td>
-                                <td>d.wilson@example.com</td>
-                                <td>(555) 345-6789</td>
-                                <td>Premium</td>
-                                <td>2023-05-12</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Membership</th>
+                    <th>Join Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr>
+                    <td>{{ member.id }}</td>
+                    <td>{{ member.name }}</td>
+                    <td>{{ member.email }}</td>
+                    <td>{{ member.phone }}</td>
+                    <td>{{ member.membership }}</td>
+                    <td>{{ member.join_date }}</td>
+                    <td><span class="status {{ member.status }}">{{ member.status|title }}</span></td>
+                    <td>
+                        <button class="btn">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td>GF001</td>
+                    <td>John Smith</td>
+                    <td>john.smith@example.com</td>
+                    <td>(555) 123-4567</td>
+                    <td>Premium</td>
+                    <td>2023-01-15</td>
+                    <td><span class="status active">Active</span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
+                </tr>
+                <tr>
+                    <td>GF002</td>
+                    <td>Sarah Johnson</td>
+                    <td>sarah.j@example.com</td>
+                    <td>(555) 987-6543</td>
+                    <td>Basic</td>
+                    <td>2023-02-20</td>
+                    <td><span class="status active">Active</span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
+                </tr>
+                <tr>
+                    <td>GF003</td>
+                    <td>Michael Brown</td>
+                    <td>m.brown@example.com</td>
+                    <td>(555) 456-7890</td>
+                    <td>Premium</td>
+                    <td>2023-03-10</td>
+                    <td><span class="status inactive">Inactive</span></span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
+                </tr>
+                <tr>
+                    <td>GF004</span></td>
+                    <td>Emily Davis</span></td>
+                    <td>emily.davis@example.com</span></td>
+                    <td>(555) 234-5678</span></td>
+                    <td>Student</span></td>
+                    <td>2023-04-05</span></td>
+                    <td><span class="status active">Active</span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
+                </tr>
+                <tr>
+                    <td>GF005</span></td>
+                    <td>David Wilson</span></td>
+                    <td>d.wilson@example.com</span></td>
+                    <td>(555) 345-6789</span></td>
+                    <td>Premium</span></td>
+                    <td>2023-05-12</span></td>
+                    <td><span class="status active">Active</span></td>
+                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
-                    
+        
         <div style="text-align: center; margin-top: 20px;">
             <button class="btn">Previous</button>
             <button class="btn" style="margin: 0 10px;">1</button>
@@ -144,9 +140,6 @@
             <button class="btn">3</button>
             <button class="btn">Next</button>
         </div>
-        </main>
-    </div>
+    </main>
 </div>
-    
-
-{% endblock members %}
+{% endblock %}

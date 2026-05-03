@@ -21,8 +21,11 @@ class Member(models.Model):
         max_length= 255,
         db_index = True
     )
-
-    member_ship = models.CharField(
+    email = models.EmailField()
+    phone = models.CharField(
+        max_length=10
+    )
+    membership = models.CharField(
         max_length = 255,
         choices = Membership.choices,
         default = Membership.BASIC
