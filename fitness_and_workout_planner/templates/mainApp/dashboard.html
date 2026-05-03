@@ -71,7 +71,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for member in recent_members %}
+                    {% for member in members %}
                     <tr>
                         <td>{{ member.id }}</td>
                         <td>{{ member.name }}</td>
@@ -84,38 +84,7 @@
                         </td>
                     </tr>
                     {% empty %}
-                    <tr>
-                        <td>GF001</td>
-                        <td>John Smith</td>
-                        <td>Premium</td>
-                        <td>2023-01-15</td>
-                        <td><span class="status active">Active</span></td>
-                        <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
-                    </tr>
-                    <tr>
-                        <td>GF002</td>
-                        <td>Sarah Johnson</td>
-                        <td>Basic</td>
-                        <td>2023-02-20</td>
-                        <td><span class="status active">Active</span></td>
-                        <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
-                    </tr>
-                    <tr>
-                        <td>GF003</td>
-                        <td>Michael Brown</td>
-                        <td>Premium</td>
-                        <td>2023-03-10</td>
-                        <td><span class="status inactive">Inactive</span></td>
-                        <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
-                    </tr>
-                    <tr>
-                        <td>GF004</td>
-                        <td>Emily Davis</td>
-                        <td>Student</td>
-                        <td>2023-04-05</td>
-                        <td><span class="status active">Active</span></td>
-                        <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
-                    </tr>
+                    
                     {% endfor %}
                 </tbody>
             </table>
