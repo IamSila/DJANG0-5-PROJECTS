@@ -42,7 +42,7 @@
             </div>
             <div class="stat-card">
                 <h3>New This Month</h3>
-                <div class="value">{{ new_members|default:"12" }}</div>
+                <div class="value">{{ new_this_month|default:"12" }}</div>
             </div>
             <div class="stat-card">
                 <h3>Renewals Due</h3>
@@ -79,56 +79,6 @@
                     </td>
                 </tr>
                 {% empty %}
-                <tr>
-                    <td>GF001</td>
-                    <td>John Smith</td>
-                    <td>john.smith@example.com</td>
-                    <td>(555) 123-4567</td>
-                    <td>Premium</td>
-                    <td>2023-01-15</td>
-                    <td><span class="status active">Active</span></td>
-                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
-                </tr>
-                <tr>
-                    <td>GF002</td>
-                    <td>Sarah Johnson</td>
-                    <td>sarah.j@example.com</td>
-                    <td>(555) 987-6543</td>
-                    <td>Basic</td>
-                    <td>2023-02-20</td>
-                    <td><span class="status active">Active</span></td>
-                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
-                </tr>
-                <tr>
-                    <td>GF003</td>
-                    <td>Michael Brown</td>
-                    <td>m.brown@example.com</td>
-                    <td>(555) 456-7890</td>
-                    <td>Premium</td>
-                    <td>2023-03-10</td>
-                    <td><span class="status inactive">Inactive</span></span></td>
-                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
-                </tr>
-                <tr>
-                    <td>GF004</span></td>
-                    <td>Emily Davis</span></td>
-                    <td>emily.davis@example.com</span></td>
-                    <td>(555) 234-5678</span></td>
-                    <td>Student</span></td>
-                    <td>2023-04-05</span></td>
-                    <td><span class="status active">Active</span></td>
-                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
-                </tr>
-                <tr>
-                    <td>GF005</span></td>
-                    <td>David Wilson</span></td>
-                    <td>d.wilson@example.com</span></td>
-                    <td>(555) 345-6789</span></td>
-                    <td>Premium</span></td>
-                    <td>2023-05-12</span></td>
-                    <td><span class="status active">Active</span></td>
-                    <td><button class="btn">Edit</button><button class="btn btn-danger">Delete</button></td>
-                </tr>
                 {% endfor %}
             </tbody>
         </table>
