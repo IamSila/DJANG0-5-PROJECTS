@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from datetime import timedelta
+from django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator
 
 
 # Create your models here.
@@ -130,11 +131,7 @@ class GymClass(models.Model):
         return f"{self.name} | {self.trainer} | {self.start_time}"
     
 
-
-from django.db import models
-from django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator
-from django.utils import timezone
-
+# Trainers models
 class Trainer(models.Model):
     # Status Choices
     class Status(models.TextChoices):
