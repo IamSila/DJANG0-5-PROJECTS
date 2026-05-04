@@ -2,7 +2,7 @@ from django.shortcuts import render
 # utils
 from django.utils import timezone
 # models
-from .models import Member
+from .models import Member, GymClass
 # Create your views here.
 
 
@@ -23,7 +23,12 @@ def dashboard(request):
   now = timezone.now()
   new_this_month = Member.objects.filter(join_date__month = now.month).count()
 
-  context = {"members":members, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month}
+
+  classes = GymClass.objects.all()
+
+
+
+  context = {"members":members, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month, "classes": classes}
   return render(request, 'mainApp/dashboard.html', context)
 
 

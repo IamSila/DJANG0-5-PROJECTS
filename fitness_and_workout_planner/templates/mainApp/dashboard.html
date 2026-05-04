@@ -103,14 +103,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for class in classes %}
                     <tr>
-                        <td>Yoga</td>
-                        <td>Lisa Wilson</td>
-                        <td>10:00 AM</td>
-                        <td>Mon, Wed, Fri</td>
-                        <td>15/20</td>
+                        <td>{{ class.name }}</td>
+                        <td>{{ class.trainer }}</td>
+                        <td>{{ class.start_time }}</td>
+                        <td>{{class.duration}}</td>
+                        <td>{{class.capacity}}</td>
                         <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></td>
                     </tr>
+                    {% endfor %}
                     <tr>
                         <td>Cardio Blast</td>
                         <td>Mark Thompson</td>

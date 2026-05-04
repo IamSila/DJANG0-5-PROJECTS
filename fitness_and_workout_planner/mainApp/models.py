@@ -62,6 +62,15 @@ class Member(models.Model):
 
 # gym class model
 class GymClass(models.Model):
+    class DayChoices(models.TextChoices):
+        MONDAY = "MON", "Monday"
+        TUESDAY = "TUE", "Tuesday"
+        WEDNESDAY = "WED", "Wednesday"
+        THURSDAY = "THU", "Thursday"
+        FRIDAY = "FRI", "Friday"
+        SATURDAY = "SAT", "Saturday"
+        SUNDAY = "SUN", "Sunday"
+    
     name = models.CharField(max_length=150)
 
     trainer = models.CharField(
@@ -74,7 +83,12 @@ class GymClass(models.Model):
     )
 
     duration = models.PositiveIntegerField(
-        help_text="Duration in minutes"
+        help_text = "Duration in minutes"
+    )
+
+    day = models.CharField(
+        choices = DayChoices.choices,
+        max_length = 10
     )
 
     capacity = models.PositiveIntegerField()
