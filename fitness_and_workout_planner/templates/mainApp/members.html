@@ -16,7 +16,7 @@
             <li><a href="{% url 'dashboard' %}">Back to Dashboard</a></li>
             <li><a href="#" onclick="openModal('addMemberModal'); return false;">Add New Member</a></li>
             <li><a href="#">Import Members</a></li>
-            <li><a href="#">Export Members</a></li>
+            <li><a  href="{% url 'export_members' %}">Export Members</a></li>
             <li><a href="#">Membership Types</a></li>
         </ul>
         
@@ -127,10 +127,10 @@
         <form method="POST" action="{% url 'export_members' %}">
             {% csrf_token %}
             
-            <!-- Using your FormatForm fields -->
+            <!-- Using FormatForm fields -->
             <div class="form-group">
                 <label for="{{ form.format.id_for_label }}">Select Format</label>
-                {{ form.format }}  <!-- This uses your FORMAT_CHOICES -->
+                {{ form.format }}  
                 {% if form.format.errors %}
                     <div class="error-message">
                         {{ form.format.errors }}
