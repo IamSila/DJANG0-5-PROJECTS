@@ -35,15 +35,15 @@
             </div>
             <div class="stat-card">
                 <h3>Available Now</h3>
-                <div class="value">{{ available_trainers|default:"3" }}</div>
+                <div class="value">{{ available_trainers }}</div>
             </div>
             <div class="stat-card">
                 <h3>Certified</h3>
-                <div class="value">{{ certified_trainers|default:"7" }}</div>
+                <div class="value">{{ total_trainers }}</div>
             </div>
             <div class="stat-card">
                 <h3>On Leave</h3>
-                <div class="value">{{ on_leave|default:"1" }}</div>
+                <div class="value">{{ on_leave_trainers }}</div>
             </div>
         </div>
         
@@ -52,32 +52,7 @@
             <div class="card">
                 <h3>{{ trainer.name }}</h3>
                 <div class="number">{{ trainer.specialization }}</div>
-                <p>{{ trainer.classes_per_week }} classes/week</p>
-                <button class="btn" style="margin-top: 10px;">View Schedule</button>
-            </div>
-            {% empty %}
-            <div class="card">
-                <h3>Lisa Wilson</h3>
-                <div class="number">Yoga</div>
-                <p>5 classes/week</p>
-                <button class="btn" style="margin-top: 10px;">View Schedule</button>
-            </div>
-            <div class="card">
-                <h3>Mark Thompson</h3>
-                <div class="number">Cardio</div>
-                <p>4 classes/week</p>
-                <button class="btn" style="margin-top: 10px;">View Schedule</button>
-            </div>
-            <div class="card">
-                <h3>Robert Garcia</h3>
-                <div class="number">Strength</div>
-                <p>6 classes/week</p>
-                <button class="btn" style="margin-top: 10px;">View Schedule</button>
-            </div>
-            <div class="card">
-                <h3>Jennifer Lee</h3>
-                <div class="number">Pilates</div>
-                <p>3 classes/week</p>
+                <p>{{ trainer.trainer_specialization }} specialities</p>
                 <button class="btn" style="margin-top: 10px;">View Schedule</button>
             </div>
             {% endfor %}

@@ -2,7 +2,9 @@ from django.shortcuts import render
 # utils
 from django.utils import timezone
 # models
-from .models import Member, GymClass
+from .models import Member, GymClass, Trainer
+
+from django.db.models import Count
 # Create your views here.
 
 
@@ -54,7 +56,21 @@ def classes(request):
 
 # trainers page
 def trainers(request):
-  context = {}
+  trainers = Trainer.objects.all()
+  total_trainers  = Trainer.objects.all().count()
+
+  featured_trainers = Trainer.objects.filter(status = 'active').annotate(
+    trainer_specialization = Count("specialization", distinct = True)
+  ).order_by(
+    "-created_at",
+    "-years_of_experience",
+    "-trainer_specialization"
+  )[:4]
+
+
+  available_trainers = Trainer.objects.filter(status = "active").count()
+  on_leave_trainers = Trainer.objects.filter(status = "active").count()
+  context = {"trainers": trainers, "total_trainers": total_trainers, "featured_trainers": featured_trainers, "available_trainers": available_trainers, "on_leave_trainers":on_leave_trainers }
   return render(request, 'mainApp/trainers.html', context)
 
 # payments page
