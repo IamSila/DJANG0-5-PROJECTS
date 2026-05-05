@@ -23,3 +23,14 @@ class TrainerForm(forms.ModelForm):
         }
 
 
+
+
+
+FORMAT_CHOICES = (
+    ('xls', 'xls'),
+    ('csv', 'csv'),
+    ('json', 'json')
+)
+
+class FormatForm(forms.Form):
+    format = forms.ChoiceField(choices=FORMAT_CHOICES)

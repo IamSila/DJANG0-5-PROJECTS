@@ -1,0 +1,60 @@
+
+
+/* Export Modal Styles */
+#exportModal .modal-content {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#exportForm select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+}
+
+#exportForm select:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+#exportForm .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    color: #e74c3c;
+    font-size: 12px;
+}
+
+.search-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.search-input {
+    padding-left: 35px;
+    width: 200px;
+    display: inline-block;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}

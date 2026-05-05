@@ -1,5 +1,13 @@
 {% extends 'mainApp/base.html' %}
 
+{% load static %}
+
+{% block page_css %}
+    <link rel="stylesheet" href="{% static 'css/mainApp/members.css' %}">
+{% endblock page_css %}
+
+
+
 {% block content %}
 <div class="main-content">
     <aside class="sidebar">
@@ -25,9 +33,13 @@
     <main class="content">
         <div class="content-header">
             <h2>Member Management</h2>
-            <div>
-                <input type="text" class="form-control" placeholder="Search members..." style="width: 200px; display: inline-block;">
-                <button class="btn">Search</button>
+            <div style="display: flex; gap: 10px;">
+                <div class="search-wrapper">
+                    <input type="text" id="searchMembers" class="form-control search-input" placeholder="Search members...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <button class="btn" id="exportMembersBtn">Export Members</button>
+                <button class="btn btn-success" onclick="openModal('addMemberModal')">Add New Member</button>
             </div>
         </div>
         
@@ -42,7 +54,7 @@
             </div>
             <div class="stat-card">
                 <h3>New This Month</h3>
-                <div class="value">{{ new_this_month|default:"12" }}</div>
+                <div class="value">{{ new_members|default:"12" }}</div>
             </div>
             <div class="stat-card">
                 <h3>Renewals Due</h3>
@@ -53,6 +65,9 @@
         <table>
             <thead>
                 <tr>
+                    <th style="width: 40px;">
+                        <input type="checkbox" id="selectAllMembers">
+                    </th>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -63,9 +78,12 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="membersTableBody">
                 {% for member in members %}
                 <tr>
+                    <td>
+                        <input type="checkbox" class="member-checkbox" value="{{ member.id }}">
+                    </td>
                     <td>{{ member.id }}</td>
                     <td>{{ member.name }}</td>
                     <td>{{ member.email }}</td>
@@ -74,11 +92,16 @@
                     <td>{{ member.join_date }}</td>
                     <td><span class="status {{ member.status }}">{{ member.status|title }}</span></td>
                     <td>
-                        <button class="btn">Edit</button>
-                        <button class="btn btn-danger">Delete</button>
+                        <button class="btn btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
                     </td>
                 </tr>
                 {% empty %}
+                <tr>
+                    <td colspan="9" style="text-align: center; padding: 40px;">
+                        No members found
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -92,4 +115,38 @@
         </div>
     </main>
 </div>
+
+
+<!-- Export Modal -->
+<div class="modal" id="exportModal">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h3>Export Members</h3>
+            <span class="close">&times;</span>
+        </div>
+        <form method="POST" action="{% url 'export_members' %}">
+            {% csrf_token %}
+            
+            <!-- Using your FormatForm fields -->
+            <div class="form-group">
+                <label for="{{ form.format.id_for_label }}">Select Format</label>
+                {{ form.format }}  <!-- This uses your FORMAT_CHOICES -->
+                {% if form.format.errors %}
+                    <div class="error-message">
+                        {{ form.format.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group" style="margin-top: 20px;">
+                <button type="submit" class="btn btn-success">Download</button>
+                <button type="button" class="btn btn-danger" id="cancelExportBtn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/mainApp/members.js' %}"></script>
+{% endblock extra_js %}

@@ -1,10 +1,22 @@
 from django.shortcuts import render
 # utils
 from django.utils import timezone
+from django.views.generic import ListView, FormView
+from django.views.generic.edit import FormMixin
 # models
 from .models import Member, GymClass, Trainer
 
 from django.db.models import Count
+
+# forms
+from .forms import FormatForm
+
+
+# resources
+from .admin import MemberResource
+
+# http
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -145,3 +157,34 @@ def personalised_training(request):
         ]
     }
     return render(request, 'mainApp/personalised_training.html', context)
+
+
+
+class MemberExportView(FormView):
+    form_class = FormatForm
+    template_name = 'mainApp/members.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Ensure form is in context
+        context['form'] = self.get_form()
+        return context
+    
+    def form_valid(self, form):
+        format = form.cleaned_data['format']
+        qs = Member.objects.all()
+        dataset = MemberResource().export(qs)
+        
+        if format == 'xls':
+            data = dataset.xls
+            content_type = 'application/vnd.ms-excel'
+        elif format == 'csv':
+            data = dataset.csv
+            content_type = 'text/csv'
+        else:
+            data = dataset.json
+            content_type = 'application/json'
+        
+        response = HttpResponse(data, content_type=content_type)
+        response['Content-Disposition'] = f'attachment; filename=members.{format}'
+        return response
