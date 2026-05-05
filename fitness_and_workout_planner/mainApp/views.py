@@ -28,9 +28,10 @@ def dashboard(request):
 
   classes = GymClass.objects.all()
 
+  certified_trainers  = Trainer.objects.all().count()
 
 
-  context = {"members":members, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month, "classes": classes}
+  context = {"members":members, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month, "classes": classes, "certified_trainers": certified_trainers }
   return render(request, 'mainApp/dashboard.html', context)
 
 
