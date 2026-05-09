@@ -13,7 +13,7 @@ from .forms import FormatForm
 
 
 # resources
-from .admin import MemberResource
+from .resources import MemberResource
 
 # http
 from django.http import HttpResponse
@@ -64,7 +64,9 @@ def members(request):
 
 # classes page
 def classes(request):
-  context = {}
+  now = timezone.now()
+  upcoming_classes = GymClass.objects.filter(start_time__gte = now)[:4]
+  context = {"upcoming_classes": upcoming_classes}
   return render(request, 'mainApp/classes.html', context)
 
 # trainers page
@@ -188,3 +190,10 @@ class MemberExportView(FormView):
         response = HttpResponse(data, content_type=content_type)
         response['Content-Disposition'] = f'attachment; filename=members.{format}'
         return response
+
+
+
+# uploading members data xlsx
+def member_upload_file(request):
+  context = {}
+  return render(request, 'mainApp/upload_form.html', context)

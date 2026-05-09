@@ -272,42 +272,9 @@
                 <tr>
                     <td>{{ class.name }}</td>
                     <td>{{ class.trainer }}</td>
-                    <td>{{ class.date_time }}</td>
+                    <td>{{ class.start_time }}</td>
                     <td>{{ class.duration }} min</td>
-                    <td>{{ class.enrolled }}/{{ class.capacity }}</td>
-                    <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td>Yoga</td>
-                    <td>Lisa Wilson</td>
-                    <td>Mon, Jun 5, 10:00 AM</td>
-                    <td>60 min</td>
-                    <td>15/20</td>
-                    <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></td>
-                </tr>
-                <tr>
-                    <td>Cardio Blast</td>
-                    <td>Mark Thompson</td>
-                    <td>Tue, Jun 6, 11:30 AM</td>
-                    <td>45 min</td>
-                    <td>18/25</td>
-                    <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></td>
-                </tr>
-                <tr>
-                    <td>Strength Training</td>
-                    <td>Robert Garcia</td>
-                    <td>Wed, Jun 7, 2:00 PM</td>
-                    <td>60 min</td>
-                    <td>12/15</td>
-                    <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></td>
-                </tr>
-                <tr>
-                    <td>Pilates</td>
-                    <td>Jennifer Lee</td>
-                    <td>Wed, Jun 7, 4:30 PM</td>
-                    <td>50 min</td>
-                    <td>10/12</td>
+                    <td>{{ class.capacity }}</td>
                     <td><button class="btn">Edit</button><button class="btn btn-danger">Cancel</button></td>
                 </tr>
                 {% endfor %}

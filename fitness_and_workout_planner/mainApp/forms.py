@@ -27,7 +27,7 @@ class TrainerForm(forms.ModelForm):
 
 
 FORMAT_CHOICES = (
-    ('xls', 'xls'),
+    ('xlsx', 'xlsx'),
     ('csv', 'csv'),
     ('json', 'json')
 )

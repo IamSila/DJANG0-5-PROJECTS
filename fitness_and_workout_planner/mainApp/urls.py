@@ -12,4 +12,5 @@ urlpatterns = [
   path('reports/', views.reports, name='reports'),
   path('personalised-training/', views.personalised_training, name='personalised_training'),
   path('export_members/', MemberExportView.as_view(), name='export_members'),
+  path("members_upload/", views.member_upload_file, name='member_upload'),
 ]
