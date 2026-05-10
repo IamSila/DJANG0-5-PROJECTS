@@ -9,7 +9,7 @@ from .models import Member, GymClass, Trainer
 from django.db.models import Count
 
 # forms
-from .forms import FormatForm
+from .forms import FormatForm, ImportForm
 
 
 # resources
@@ -59,15 +59,16 @@ def members(request):
   active_members = Member.objects.filter(status='ACTIVE').count()
   now = timezone.now()
   new_this_month = Member.objects.filter(join_date__month = now.month).count()
-  form = FormatForm()
+  format_form = FormatForm()
+  import_form = ImportForm()
 
   """Export members data"""
     
   if request.method == 'POST':
-      form = FormatForm(request.POST)
+      format_form = FormatForm(request.POST)
       
-      if form.is_valid():
-          format = form.cleaned_data['format']
+      if format_form.is_valid():
+          format = format_form.cleaned_data['format']
           
           # Get all members
           qs = Member.objects.all()
@@ -100,7 +101,7 @@ def members(request):
 
 
 
-  context = {"members":members,"form" : form, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month}
+  context = {"members":members,"format_form" : format_form,"import_form":import_form, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month}
   return render(request, 'mainApp/members.html', context)
 
 
@@ -244,5 +245,6 @@ def export_members(request):
 
 # uploading members data xlsx
 def import_members(request):
-  context = {}
+  form = FileForm()
+  context = {"form":form}
   return render(request, 'mainApp/upload_form.html', context)

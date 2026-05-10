@@ -128,11 +128,11 @@
             {% csrf_token %}
             
             <div class="form-group">
-                <label for="{{ form.format.id_for_label }}">Select Format</label>
-                {{ form.format }}
-                {% if form.format.errors %}
+                <label for="{{ format_form.format.id_for_label }}">Select Format</label>
+                {{ format_form.format }}
+                {% if format_form.format.errors %}
                     <div class="error-message">
-                        {{ form.format.errors }}
+                        {{ format_form.format.errors }}
                     </div>
                 {% endif %}
             </div>
@@ -159,9 +159,10 @@
         <div class="modal-body">
             <form method="post" action="{% url 'import_members' %}" enctype="multipart/form-data">
                 {% csrf_token %}
+                <p><b>Select File</b></p>
+                {{import_form}}
                 <div class="form-group">
-                    <label>Select File</label>
-                    <input type="file" name="file" class="form-control" accept=".csv,.xls,.xlsx,.json" required>
+                    
                     <small style="color: #666; display: block; margin-top: 5px;">Supported: CSV, Excel, JSON (Max 10MB)</small>
                 </div>
                 <div class="form-group" style="margin-top: 20px;">

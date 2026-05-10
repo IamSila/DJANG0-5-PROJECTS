@@ -36,5 +36,9 @@ class FormatForm(forms.Form):
     format = forms.ChoiceField(label="format", choices=FORMAT_CHOICES)
 
 # upload form for member import
-class FileForm(forms.Form):
+class ImportForm(forms.Form):
     file = forms.FileField()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Apply to a specific field
+        self.fields['file'].widget.attrs.update({'class': 'form-control'})
