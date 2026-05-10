@@ -145,3 +145,43 @@ function downloadMembers(format) {
 // Make functions globally available
 window.closeExportModal = closeExportModal;
 window.downloadMembers = downloadMembers;
+
+
+
+
+
+// Import Members form
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadBtn = document.getElementById('uploadMembersBtn');
+    const importModal = document.getElementById('importModal');
+    const cancelBtn = document.getElementById('cancelImportBtn');
+    
+    // Open modal when upload button is clicked
+    if (uploadBtn) {
+        uploadBtn.addEventListener('click', function() {
+            importModal.style.display = 'flex';
+        });
+    }
+    
+    // Close modal on cancel
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+            importModal.style.display = 'none';
+        });
+    }
+    
+    // Close modal on X button
+    const closeBtn = importModal?.querySelector('.close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            importModal.style.display = 'none';
+        });
+    }
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === importModal) {
+            importModal.style.display = 'none';
+        }
+    });
+});

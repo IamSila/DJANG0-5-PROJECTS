@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # utils
 from django.utils import timezone
 from django.views.generic import ListView, FormView
@@ -17,6 +17,9 @@ from .resources import MemberResource
 
 # http
 from django.http import HttpResponse
+
+# contrib
+from django.contrib import messages
 # Create your views here.
 
 
@@ -56,8 +59,48 @@ def members(request):
   active_members = Member.objects.filter(status='ACTIVE').count()
   now = timezone.now()
   new_this_month = Member.objects.filter(join_date__month = now.month).count()
+  form = FormatForm()
 
-  context = {"members":members, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month}
+  """Export members data"""
+    
+  if request.method == 'POST':
+      form = FormatForm(request.POST)
+      
+      if form.is_valid():
+          format = form.cleaned_data['format']
+          
+          # Get all members
+          qs = Member.objects.all()
+          
+          # Export data
+          dataset = MemberResource().export(qs)
+          
+          # Prepare response based on format
+          if format == 'xlsx':
+              data = dataset.xls  # Note: django-import-export uses .xls for Excel
+              content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          elif format == 'csv':
+              data = dataset.csv
+              content_type = 'text/csv'
+          else:  # json
+              data = dataset.json
+              content_type = 'application/json'
+          
+          response = HttpResponse(data, content_type=content_type)
+          response['Content-Disposition'] = f'attachment; filename=members.{format}'
+          
+          return response
+      else:
+          messages.error(request, 'Invalid format selected')
+          return redirect('members')
+  
+  # If GET request, redirect back
+  # return redirect('members')
+
+
+
+
+  context = {"members":members,"form" : form, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month}
   return render(request, 'mainApp/members.html', context)
 
 
@@ -162,38 +205,44 @@ def personalised_training(request):
 
 
 
-class MemberExportView(FormView):
-    form_class = FormatForm
-    template_name = 'mainApp/members.html'
+def export_members(request):
+    """Export members data"""
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Ensure form is in context
-        context['form'] = self.get_form()
-        return context
-    
-    def form_valid(self, form):
-        format = form.cleaned_data['format']
-        qs = Member.objects.all()
-        dataset = MemberResource().export(qs)
+    if request.method == 'POST':
+        form = FormatForm(request.POST)
         
-        if format == 'xls':
-            data = dataset.xls
-            content_type = 'application/vnd.ms-excel'
-        elif format == 'csv':
-            data = dataset.csv
-            content_type = 'text/csv'
+        if form.is_valid():
+            format = form.cleaned_data['format']
+            
+            # Get all members
+            qs = Member.objects.all()
+            
+            # Export data
+            dataset = MemberResource().export(qs)
+            
+            # Prepare response based on format
+            if format == 'xlsx':
+                data = dataset.xls  # Note: django-import-export uses .xls for Excel
+                content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            elif format == 'csv':
+                data = dataset.csv
+                content_type = 'text/csv'
+            else:  # json
+                data = dataset.json
+                content_type = 'application/json'
+            
+            response = HttpResponse(data, content_type=content_type)
+            response['Content-Disposition'] = f'attachment; filename=members.{format}'
+            
+            return response
         else:
-            data = dataset.json
-            content_type = 'application/json'
-        
-        response = HttpResponse(data, content_type=content_type)
-        response['Content-Disposition'] = f'attachment; filename=members.{format}'
-        return response
-
-
+            messages.error(request, 'Invalid format selected')
+            return redirect('members')
+    
+    # If GET request, redirect back
+    return redirect('members')
 
 # uploading members data xlsx
-def member_upload_file(request):
+def import_members(request):
   context = {}
   return render(request, 'mainApp/upload_form.html', context)

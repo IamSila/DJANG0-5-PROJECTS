@@ -15,8 +15,8 @@
         <ul class="sidebar-menu">
             <li><a href="{% url 'dashboard' %}">Back to Dashboard</a></li>
             <li><a href="#" onclick="openModal('addMemberModal'); return false;">Add New Member</a></li>
-            <li><a href="#">Import Members</a></li>
-            <li><a  href="{% url 'export_members' %}">Export Members</a></li>
+            <li><a href="#" id="uploadMembersBtn">Import Members</a></li>
+            <li><a  href="{% url 'export_members' %}" >Export Members</a></li>
             <li><a href="#">Membership Types</a></li>
         </ul>
         
@@ -117,7 +117,7 @@
 </div>
 
 
-<!-- Export Modal -->
+<!-- export modal -->
 <div class="modal" id="exportModal">
     <div class="modal-content" style="max-width: 400px;">
         <div class="modal-header">
@@ -127,10 +127,9 @@
         <form method="POST" action="{% url 'export_members' %}">
             {% csrf_token %}
             
-            <!-- Using FormatForm fields -->
             <div class="form-group">
                 <label for="{{ form.format.id_for_label }}">Select Format</label>
-                {{ form.format }}  
+                {{ form.format }}
                 {% if form.format.errors %}
                     <div class="error-message">
                         {{ form.format.errors }}
@@ -138,14 +137,45 @@
                 {% endif %}
             </div>
             
-            <div class="form-group" style="margin-top: 20px;">
-                <button type="submit" class="btn btn-success">Download</button>
+            <div class="form-group" style="margin-top: 20px; display: flex; gap: 10px;">
+                <button type="submit" class="btn btn-success" id="downloadBtn">
+                    <span id="downloadText">Download</span>
+                    <span id="downloadSpinner" style="display: none;">Processing...</span>
+                </button>
                 <button type="button" class="btn btn-danger" id="cancelExportBtn">Cancel</button>
             </div>
         </form>
     </div>
 </div>
+
+
+<!-- Import Modal -->
+<div class="modal" id="importModal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h3>Import Members</h3>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="{% url 'import_members' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Select File</label>
+                    <input type="file" name="file" class="form-control" accept=".csv,.xls,.xlsx,.json" required>
+                    <small style="color: #666; display: block; margin-top: 5px;">Supported: CSV, Excel, JSON (Max 10MB)</small>
+                </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <button type="submit" class="btn btn-success">Import</button>
+                    <button type="button" class="btn btn-danger" id="cancelImportBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
+
 
 {% block extra_js %}
     <script src="{% static 'js/mainApp/members.js' %}"></script>
