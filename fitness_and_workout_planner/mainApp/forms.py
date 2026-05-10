@@ -33,7 +33,8 @@ FORMAT_CHOICES = (
 )
 
 class FormatForm(forms.Form):
-    format = forms.ChoiceField(choices=FORMAT_CHOICES)
+    format = forms.ChoiceField(label="format", choices=FORMAT_CHOICES)
 
-
-
+# upload form for member import
+class FileForm(forms.Form):
+    file = forms.FileField()
