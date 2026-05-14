@@ -13,4 +13,5 @@ urlpatterns = [
   path('personalised-training/', views.personalised_training, name='personalised_training'),
   path('members/export_members/', views.members, name='export_members'),
   path("members/import_members/", views.members, name='import_members'),
+  path('members/addMember/', views.add_member, name='add_member'),
 ]

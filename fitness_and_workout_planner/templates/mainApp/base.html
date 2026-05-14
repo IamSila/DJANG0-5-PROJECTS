@@ -528,6 +528,15 @@
             <!-- <i>💪</i> -->
             <h1>PowerFit Gym</h1>
           </div>
+          <div class="user-menu">
+            {% if user.is_authenticated %}
+              <span>Hello, {{ user.username }}</span>
+              <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+              <a href="{% url 'login' %}">Login</a>
+              <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+</div>
           <nav>
             <ul>
               <li>
@@ -594,46 +603,54 @@
           <h3>Add New Member</h3>
           <span class="close">&times;</span>
         </div>
-        <form id="memberForm">
+        <form id="memberForm" action="{% url 'add_member' %}" method="POST">
           {% csrf_token %}
+
           <div class="form-row">
             <div class="form-group">
               <label for="member_id">Member_id</label>
-              <input type="text" id="member_id" class="form-control" required />
+              {{add_member_form.member_id}}
+              <!-- <input type="text" id="member_id" class="form-control" required /> -->
             </div>
             <div class="form-group">
               <label for="lastName">Name</label>
-              <input type="text" id="Name" class="form-control" required />
+              {{add_member_form.name}}
+              <!-- <input type="text" id="Name" class="form-control" required /> -->
             </div>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" required />
+            {{add_member_form.email}}
+            <!-- <input type="email" id="email" class="form-control" required /> -->
           </div>
           <div class="form-group">
             <label for="phone">Phone</label>
-            <input type="tel" id="phone" class="form-control" required />
+            {{add_member_form.phone}}
+            <!-- <input type="tel" id="phone" class="form-control" required /> -->
           </div>
           <div class="form-group">
             <label for="membershipType">Membership Type</label>
-            <select id="membershipType" class="form-control" required>
+            {{add_member_form.membership}}
+            <!-- <select id="membershipType" class="form-control" required>
               <option value="">Select Membership</option>
               <option value="basic">Basic ($80/month)</option>
               <option value="premium">Premium ($120/month)</option>
               <option value="student">Student ($60/month)</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group">
             <label for="membershipType">Status</label>
-            <select id="membershipType" class="form-control" required>
+            {{add_member_form.status}}
+            <!-- <select id="membershipType" class="form-control" required>
               <option value="">Status</option>
               <option value="basic">Active</option>
               <option value="premium">inactive</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group">
             <label for="joinDate">Join Date</label>
-            <input type="date" id="joinDate" class="form-control" required />
+            {{add_member_form.join_date}}
+            <!-- <input type="date" id="joinDate" class="form-control" required /> -->
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-success">Add Member</button>
@@ -815,12 +832,12 @@
       }
 
       // Form submissions with AJAX
-      document.getElementById("memberForm")?.addEventListener("submit", (e) => {
+      /* document.getElementById("memberForm")?.addEventListener("submit", (e) => {
         e.preventDefault();
         alert("Member added successfully!");
         document.getElementById("addMemberModal").style.display = "none";
         e.target.reset();
-      });
+      }); */
 
       document.getElementById("classForm")?.addEventListener("submit", (e) => {
         e.preventDefault();

@@ -6,12 +6,14 @@ from .models import Member, GymClass, Trainer
 
 
 
+
 # Register your models here.
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
     list_display = ["member_id", "name", "membership", "join_date", "status"]
     # list_filter = []
     search_fields = ["name", "member_id", "membership"]
+    date_hierarchy = 'join_date'
 
 @admin.register(GymClass)
 class GymClassAdmin(admin.ModelAdmin):

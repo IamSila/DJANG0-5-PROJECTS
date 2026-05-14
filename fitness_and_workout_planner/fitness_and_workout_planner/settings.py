@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mainApp.apps.MainappConfig',
     'csvs.apps.CsvsConfig',
+    'personalized_training.apps.PersonalizedTrainingConfig',
 
     'import_export',
 ]
@@ -133,4 +134,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
+# Redirect after login (if not using CustomLoginView's success_url)
+LOGIN_REDIRECT_URL = '/personalized-training/'
+LOGOUT_REDIRECT_URL = '/login/'
+LOGIN_URL = '/login/'  # where @login_required redirects

@@ -1,0 +1,496 @@
+/* ========== COMPLETE CSS FOR MEMBER FORM ========== */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Row and Column */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.col-md-8 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+@media (min-width: 768px) {
+    .col-md-8 {
+        flex: 0 0 66.666667%;
+        max-width: 66.666667%;
+    }
+}
+
+/* Card Styles */
+.card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    margin-top: 20px;
+    border: none;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+    border-bottom: none;
+}
+
+.card-header h3 {
+    font-size: 28px;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 40px;
+}
+
+/* Form Group */
+.mb-3 {
+    margin-bottom: 24px;
+}
+
+/* Form Label */
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.text-danger {
+    color: #e74c3c;
+    margin-left: 4px;
+}
+
+/* Form Control - Base Styles (matches your widget classes) */
+.form-control,
+.form-select,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    background-color: #fff;
+}
+
+/* Form Control Focus State */
+.form-control:focus,
+.form-select:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Form Control Error State */
+.form-control.error,
+.form-select.error {
+    border-color: #e74c3c;
+}
+
+/* Form Control Disabled State */
+.form-control:disabled,
+.form-select:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Form Select Specific */
+.form-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+/* Form Select Hover */
+.form-select:hover {
+    border-color: #667eea;
+}
+
+/* Help Text */
+.form-text {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.text-muted {
+    color: #666;
+}
+
+/* Alert Messages */
+.alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    border: none;
+    position: relative;
+}
+
+.alert-dismissible {
+    padding-right: 40px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger,
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left: 4px solid #ffc107;
+}
+
+/* Alert Close Button */
+.btn-close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.btn-close:hover {
+    opacity: 1;
+}
+
+/* Field Errors */
+.alert-danger.mt-1 {
+    margin-top: 8px;
+    margin-bottom: 0;
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+/* Button Group */
+.d-grid {
+    display: grid;
+}
+
+.gap-2 {
+    gap: 12px;
+}
+
+.d-md-flex {
+    display: flex;
+}
+
+.justify-content-md-end {
+    justify-content: flex-end;
+}
+
+/* Button Styles */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Date Input Specific */
+input[type="date"] {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background-color: #f0f0f0;
+}
+
+/* Placeholder Styling */
+::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: #999;
+}
+
+::-ms-input-placeholder {
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .card-body {
+        padding: 24px;
+    }
+
+    .card-header {
+        padding: 20px;
+    }
+
+    .card-header h3 {
+        font-size: 24px;
+    }
+
+    .form-control,
+    .form-select {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .d-md-flex {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Small screens */
+@media (max-width: 480px) {
+    .card-body {
+        padding: 16px;
+    }
+
+    .mb-3 {
+        margin-bottom: 16px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    .btn,
+    .btn-close {
+        display: none;
+    }
+
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .card-header {
+        background: #f8f9fa;
+        color: #000;
+    }
+
+    .form-control,
+    .form-select {
+        border: 1px solid #ddd;
+        background: white;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .card {
+        background: #1e1e2e;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    }
+
+    .form-label {
+        color: #e0e0e0;
+    }
+
+    .form-control,
+    .form-select,
+    input,
+    select,
+    textarea {
+        background-color: #2d2d3d;
+        border-color: #3d3d4d;
+        color: #e0e0e0;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #667eea;
+        background-color: #3d3d4d;
+    }
+
+    .text-muted {
+        color: #aaa;
+    }
+
+    ::placeholder {
+        color: #777;
+    }
+
+    .form-select {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    }
+
+    .alert-success {
+        background-color: #1e3a2f;
+        color: #a5d6a5;
+    }
+
+    .alert-danger {
+        background-color: #3a1e1e;
+        color: #f5a5a5;
+    }
+}
+
+/* Hover Effects for Desktop */
+@media (hover: hover) {
+
+    .form-control:hover,
+    .form-select:hover {
+        border-color: #667eea;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* Focus Visible for Accessibility */
+.form-control:focus-visible,
+.form-select:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Animation for alerts */
+.fade {
+    transition: opacity 0.15s linear;
+}
+
+.fade.show {
+    opacity: 1;
+}

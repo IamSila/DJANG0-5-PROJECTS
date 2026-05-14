@@ -1,183 +1,193 @@
-{% extends 'mainApp/base.html' %}
-
-{% load static %}
-
-{% block page_css %}
-    <link rel="stylesheet" href="{% static 'css/mainApp/members.css' %}">
-{% endblock page_css %}
-
-
-
-{% block content %}
+{% extends 'mainApp/base.html' %} {% load static %} {% block page_css %}
+<link rel="stylesheet" href="{% static 'css/mainApp/members.css' %}" />
+{% endblock page_css %} {% block content %}
 <div class="main-content">
-    <aside class="sidebar">
-        <h2>Member Actions</h2>
-        <ul class="sidebar-menu">
-            <li><a href="{% url 'dashboard' %}">Back to Dashboard</a></li>
-            <li><a href="#" onclick="openModal('addMemberModal'); return false;">Add New Member</a></li>
-            <li><a href="#" id="uploadMembersBtn">Import Members</a></li>
-            <li><a  href="{% url 'export_members' %}" >Export Members</a></li>
-            <li><a href="#">Membership Types</a></li>
-        </ul>
-        
-        <h2>Filters</h2>
-        <ul class="sidebar-menu">
-            <li><a href="#">All Members</a></li>
-            <li><a href="#">Active Members</a></li>
-            <li><a href="#">Inactive Members</a></li>
-            <li><a href="#">Premium Members</a></li>
-            <li><a href="#">Basic Members</a></li>
-        </ul>
-    </aside>
-    
-    <main class="content">
-        <div class="content-header">
-            <h2>Member Management</h2>
-            <div style="display: flex; gap: 10px;">
-                <div class="search-wrapper">
-                    <input type="text" id="searchMembers" class="form-control search-input" placeholder="Search members...">
-                    <span class="search-icon">🔍</span>
-                </div>
-                <button class="btn" id="exportMembersBtn">Export Members</button>
-                <button class="btn btn-success" onclick="openModal('addMemberModal')">Add New Member</button>
-            </div>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Members</h3>
-                <div class="value">{{ total_members|default:"247" }}</div>
-            </div>
-            <div class="stat-card">
-                <h3>Active Members</h3>
-                <div class="value">{{ active_members|default:"218" }}</div>
-            </div>
-            <div class="stat-card">
-                <h3>New This Month</h3>
-                <div class="value">{{ new_members|default:"12" }}</div>
-            </div>
-            <div class="stat-card">
-                <h3>Renewals Due</h3>
-                <div class="value">{{ renewals_due|default:"18" }}</div>
-            </div>
-        </div>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 40px;">
-                        <input type="checkbox" id="selectAllMembers">
-                    </th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Membership</th>
-                    <th>Join Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="membersTableBody">
-                {% for member in members %}
-                <tr>
-                    <td>
-                        <input type="checkbox" class="member-checkbox" value="{{ member.id }}">
-                    </td>
-                    <td>{{ member.id }}</td>
-                    <td>{{ member.name }}</td>
-                    <td>{{ member.email }}</td>
-                    <td>{{ member.phone }}</td>
-                    <td>{{ member.membership }}</td>
-                    <td>{{ member.join_date }}</td>
-                    <td><span class="status {{ member.status }}">{{ member.status|title }}</span></td>
-                    <td>
-                        <button class="btn btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="9" style="text-align: center; padding: 40px;">
-                        No members found
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
-        <div style="text-align: center; margin-top: 20px;">
-            <button class="btn">Previous</button>
-            <button class="btn" style="margin: 0 10px;">1</button>
-            <button class="btn">2</button>
-            <button class="btn">3</button>
-            <button class="btn">Next</button>
-        </div>
-    </main>
-</div>
+  <aside class="sidebar">
+    <h2>Member Actions</h2>
+    <ul class="sidebar-menu">
+      <li><a href="{% url 'dashboard' %}">Back to Dashboard</a></li>
+      <li><a href="{% url 'add_member' %}">Add New Member</a></li>
+      <li><a href="#" id="uploadMembersBtn">Import Members</a></li>
+      <li><a href="{% url 'export_members' %}">Export Members</a></li>
+      <li><a href="#">Membership Types</a></li>
+    </ul>
 
+    <h2>Filters</h2>
+    <ul class="sidebar-menu">
+      <li><a href="#">All Members</a></li>
+      <li><a href="#">Active Members</a></li>
+      <li><a href="#">Inactive Members</a></li>
+      <li><a href="#">Premium Members</a></li>
+      <li><a href="#">Basic Members</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <div class="content-header">
+      <h2>Member Management</h2>
+      <div style="display: flex; gap: 10px">
+        <div class="search-wrapper">
+          <input
+            type="text"
+            id="searchMembers"
+            class="form-control search-input"
+            placeholder="Search members..."
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+        <button class="btn" id="exportMembersBtn">Export Members</button>
+        <button class="btn btn-success" onclick="openModal('addMemberModal')">
+          Add New Member
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Members</h3>
+        <div class="value">{{ total_members|default:"247" }}</div>
+      </div>
+      <div class="stat-card">
+        <h3>Active Members</h3>
+        <div class="value">{{ active_members|default:"218" }}</div>
+      </div>
+      <div class="stat-card">
+        <h3>New This Month</h3>
+        <div class="value">{{ new_this_month|default:"12" }}</div>
+      </div>
+      <div class="stat-card">
+        <h3>Renewals Due</h3>
+        <div class="value">{{ renewals_due|default:"18" }}</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 40px">
+            <input type="checkbox" id="selectAllMembers" />
+          </th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Membership</th>
+          <th>Join Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="membersTableBody">
+        {% for member in members %}
+        <tr>
+          <td>
+            <input
+              type="checkbox"
+              class="member-checkbox"
+              value="{{ member.id }}"
+            />
+          </td>
+          <td>{{ member.id }}</td>
+          <td>{{ member.name }}</td>
+          <td>{{ member.email }}</td>
+          <td>{{ member.phone }}</td>
+          <td>{{ member.membership }}</td>
+          <td>{{ member.join_date }}</td>
+          <td>
+            <span class="status {{ member.status }}"
+              >{{ member.status|title }}</span
+            >
+          </td>
+          <td>
+            <button class="btn btn-sm">Edit</button>
+            <button class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="9" style="text-align: center; padding: 40px">
+            No members found
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div style="text-align: center; margin-top: 20px">
+      <button class="btn">Previous</button>
+      <button class="btn" style="margin: 0 10px">1</button>
+      <button class="btn">2</button>
+      <button class="btn">3</button>
+      <button class="btn">Next</button>
+    </div>
+  </main>
+</div>
 
 <!-- export modal -->
 <div class="modal" id="exportModal">
-    <div class="modal-content" style="max-width: 400px;">
-        <div class="modal-header">
-            <h3>Export Members</h3>
-            <span class="close">&times;</span>
-        </div>
-        <form method="POST" action="{% url 'export_members' %}">
-            {% csrf_token %}
-            
-            <div class="form-group">
-                <label for="{{ format_form.format.id_for_label }}">Select Format</label>
-                {{ format_form.format }}
-                {% if format_form.format.errors %}
-                    <div class="error-message">
-                        {{ format_form.format.errors }}
-                    </div>
-                {% endif %}
-            </div>
-            
-            <div class="form-group" style="margin-top: 20px; display: flex; gap: 10px;">
-                <button type="submit" class="btn btn-success" id="downloadBtn">
-                    <span id="downloadText">Download</span>
-                    <span id="downloadSpinner" style="display: none;">Processing...</span>
-                </button>
-                <button type="button" class="btn btn-danger" id="cancelExportBtn">Cancel</button>
-            </div>
-        </form>
+  <div class="modal-content" style="max-width: 400px">
+    <div class="modal-header">
+      <h3>Export Members</h3>
+      <span class="close">&times;</span>
     </div>
-</div>
+    <form method="POST" action="{% url 'export_members' %}">
+      {% csrf_token %}
 
+      <div class="form-group">
+        <label for="{{ format_form.format.id_for_label }}">Select Format</label>
+        {{ format_form.format }} {% if format_form.format.errors %}
+        <div class="error-message">{{ format_form.format.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div
+        class="form-group"
+        style="margin-top: 20px; display: flex; gap: 10px"
+      >
+        <button type="submit" class="btn btn-success" id="downloadBtn">
+          <span id="downloadText">Download</span>
+          <span id="downloadSpinner" style="display: none">Processing...</span>
+        </button>
+        <button type="button" class="btn btn-danger" id="cancelExportBtn">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <!-- Import Modal -->
 <div class="modal" id="importModal">
-    <div class="modal-content" style="max-width: 500px;">
-        <div class="modal-header">
-            <h3>Import Members</h3>
-            <span class="close">&times;</span>
-        </div>
-        <div class="modal-body">
-            <form method="post" action="{% url 'import_members' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                <p><b>Select File</b></p>
-                {{import_form}}
-                <div class="form-group">
-                    
-                    <small style="color: #666; display: block; margin-top: 5px;">Supported: CSV, Excel, JSON (Max 10MB)</small>
-                </div>
-                <div class="form-group" style="margin-top: 20px;">
-                    <button type="submit" class="btn btn-success">Import</button>
-                    <button type="button" class="btn btn-danger" id="cancelImportBtn">Cancel</button>
-                </div>
-            </form>
-        </div>
+  <div class="modal-content" style="max-width: 500px">
+    <div class="modal-header">
+      <h3>Import Members</h3>
+      <span class="close">&times;</span>
     </div>
+    <div class="modal-body">
+      <form
+        method="post"
+        action="{% url 'import_members' %}"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <p><b>Select File</b></p>
+        {{import_form}}
+        <div class="form-group">
+          <small style="color: #666; display: block; margin-top: 5px"
+            >Supported: CSV, Excel, JSON (Max 10MB)</small
+          >
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+          <button type="submit" class="btn btn-success">Import</button>
+          <button type="button" class="btn btn-danger" id="cancelImportBtn">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
-
-{% endblock %}
-
-
-{% block extra_js %}
-    <script src="{% static 'js/mainApp/members.js' %}"></script>
+{% endblock %} {% block extra_js %}
+<script src="{% static 'js/mainApp/members.js' %}"></script>
 {% endblock extra_js %}

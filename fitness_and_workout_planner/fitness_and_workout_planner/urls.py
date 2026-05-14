@@ -22,7 +22,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('mainApp.urls')),
+    path('csvs/', include('csvs.urls', namespace='csvs')),
+    path('', include('personalized_training.urls')),
 ]
+
 
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -9,7 +9,7 @@ from .models import Member, GymClass, Trainer
 from django.db.models import Count
 
 # forms
-from .forms import FormatForm, ImportForm
+from .forms import FormatForm, MemberForm
 
 
 # resources
@@ -20,6 +20,8 @@ from django.http import HttpResponse
 
 # contrib
 from django.contrib import messages
+
+from csvs.forms import CsvFileForm
 # Create your views here.
 
 
@@ -52,46 +54,46 @@ def dashboard(request):
 
 # members page
 def members(request):
-  members = Member.objects.all()
+    members = Member.objects.all()
 
-  # statistics
-  total_members = Member.objects.count()
-  active_members = Member.objects.filter(status='ACTIVE').count()
-  now = timezone.now()
-  new_this_month = Member.objects.filter(join_date__month = now.month).count()
-  format_form = FormatForm()
-  import_form = ImportForm()
+    # statistics
+    total_members = Member.objects.count()
+    active_members = Member.objects.filter(status='ACTIVE').count()
+    now = timezone.now()
+    new_this_month = Member.objects.filter(join_date__month = now.month).count()
+    format_form = FormatForm()
+    import_form = CsvFileForm(request.POST or None, request.FILES or None)
 
-  """Export members data"""
+    """Export members data"""
     
-  if request.method == 'POST':
-      format_form = FormatForm(request.POST)
+    if request.method == 'POST':
+        format_form = FormatForm(request.POST)
       
-      if format_form.is_valid():
-          format = format_form.cleaned_data['format']
+        if format_form.is_valid():
+            format = format_form.cleaned_data['format']
           
-          # Get all members
-          qs = Member.objects.all()
+            # Get all members
+            qs = Member.objects.all()
           
           # Export data
-          dataset = MemberResource().export(qs)
+            dataset = MemberResource().export(qs)
           
           # Prepare response based on format
-          if format == 'xlsx':
-              data = dataset.xls  # Note: django-import-export uses .xls for Excel
-              content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          elif format == 'csv':
-              data = dataset.csv
-              content_type = 'text/csv'
-          else:  # json
-              data = dataset.json
-              content_type = 'application/json'
+            if format == 'xlsx':
+                data = dataset.xls  # Note: django-import-export uses .xls for Excel
+                content_type = 'application/vnd.openxmlformats-officedocument.      spreadsheetml.sheet'
+            elif format == 'csv':
+                data = dataset.csv
+                content_type = 'text/csv'
+            else:  # json
+                data = dataset.json
+                content_type = 'application/json'
           
-          response = HttpResponse(data, content_type=content_type)
-          response['Content-Disposition'] = f'attachment; filename=members.{format}'
+            response = HttpResponse(data, content_type=content_type)
+            response['Content-Disposition'] = f'attachment; filename=members.{format}'
           
-          return response
-      else:
+            return response
+        else:
           messages.error(request, 'Invalid format selected')
           return redirect('members')
   
@@ -99,10 +101,18 @@ def members(request):
   # return redirect('members')
 
 
+    '''Import members data'''
+    if import_form.is_valid():
+        import_form.save()
+        import_form = CsvFileForm()
 
 
-  context = {"members":members,"format_form" : format_form,"import_form":import_form, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month}
-  return render(request, 'mainApp/members.html', context)
+      
+
+
+
+    context = {"members":members,"format_form" : format_form,"import_form":import_form, "total_members": total_members, "active_members": active_members, "new_this_month": new_this_month}
+    return render(request, 'mainApp/members.html', context)
 
 
 
@@ -244,7 +254,30 @@ def export_members(request):
     return redirect('members')
 
 # uploading members data xlsx
-def import_members(request):
-  form = FileForm()
-  context = {"form":form}
-  return render(request, 'mainApp/upload_form.html', context)
+# def import_members(request):
+#   form = FileForm()
+#   context = {"form":form}
+#   return render(request, 'mainApp/upload_form.html', context)
+
+
+
+
+
+# add a member
+def add_member(request):
+    """View to add a new member"""
+    if request.method == 'POST':
+        add_member_form = MemberForm(request.POST)
+        if add_member_form.is_valid():
+            member = add_member_form.save()
+            messages.success(request, f'Member "{member.member_id} - {member.name}" has been added successfully!')
+            return redirect('members')  # Change to your list view URL name
+        else:
+            # Display form errors
+            for field, errors in add_member_form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
+    else:
+        add_member_form = MemberForm()
+    
+    return render(request, 'mainApp/add_member.html', {'add_member_form': add_member_form})

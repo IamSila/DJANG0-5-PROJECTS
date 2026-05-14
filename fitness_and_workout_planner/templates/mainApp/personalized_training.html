@@ -1,0 +1,512 @@
+{% extends 'mainApp/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <aside class="sidebar">
+        <h2>Personalized Training</h2>
+        <ul class="sidebar-menu">
+            <li><a href="{% url 'dashboard' %}">Back to Dashboard</a></li>
+            <li><a href="#" onclick="openModal('assessmentModal')">Take Assessment</a></li>
+            <li><a href="#" onclick="openModal('goalModal')">Set New Goals</a></li>
+            <li><a href="{% url 'download_plan' %}">Download Plan</a></li>
+            <li><a href="#">Share with Trainer</a></li>
+        </ul>
+
+        <h2>Quick Stats</h2>
+        <ul class="sidebar-menu">
+            <li><a href="#">Current Streak: {{ member.current_streak|default:"0" }} days</a></li>
+            <li><a href="#">Total Workouts: {{ member.total_workouts|default:"0" }}</a></li>
+            <li><a href="#">Hours Trained: {{ member.total_hours|default:"0" }} hrs</a></li>
+            <li><a href="#">Calories Burned: {{ member.calories_burned|default:"0" }}</a></li>
+        </ul>
+
+        <h2>Trainer Tips</h2>
+        <ul class="sidebar-menu">
+            {% for tip in trainer_tips %}
+                <li><a href="#">{{ tip.tip_text }}</a></li>
+            {% empty %}
+                <li><a href="#">Stay hydrated during workouts</a></li>
+                <li><a href="#">Don't skip warm-up exercises</a></li>
+                <li><a href="#">Rest days are important</a></li>
+                <li><a href="#">Track your progress weekly</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <main class="content">
+        <div class="content-header">
+            <h2>Welcome Back, {{ member.user.first_name|default:user.username }}!</h2>
+            <div>
+                <button class="btn btn-success" onclick="openModal('workoutModal')">Log Workout</button>
+                <button class="btn" onclick="openModal('progressModal')">View Progress</button>
+            </div>
+        </div>
+
+        <!-- Member Profile Summary Cards -->
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Membership Level</h3>
+                <div class="number">{{ member.membership_type|default:"Premium" }}</div>
+                <p>Valid until {{ member.membership_expiry|date:"M d, Y"|default:"Dec 31, 2024" }}</p>
+            </div>
+            <div class="card">
+                <h3>Fitness Level</h3>
+                <div class="number">{{ member.get_fitness_level_display|default:"Not set" }}</div>
+                <p>Based on {% if member.updated_at %}your last assessment{% else %}default values{% endif %}</p>
+                {% if not member.fitness_level %}
+                    <button class="btn btn-sm" onclick="openModal('assessmentModal')">Complete Assessment</button>
+                {% endif %}
+            </div>
+            <div class="card">
+                <h3>Primary Goal</h3>
+                <div class="number">{{ member.get_primary_goal_display|default:"Not set" }}</div>
+                <p>{{ member.goal_progress|default:"0" }}% completed</p>
+            </div>
+            <div class="card">
+                <h3>Assigned Trainer</h3>
+                <div class="number">{{ member.trainer_name|default:"Lisa Wilson" }}</div>
+                <p>{{ member.next_session|default:"Next session: Tomorrow" }}</p>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="workout">Workout Plan</div>
+            <div class="tab" data-tab="nutrition">Nutrition Guide</div>
+            <div class="tab" data-tab="progress">Progress Tracking</div>
+            <div class="tab" data-tab="achievements">Achievements</div>
+        </div>
+
+        <!-- Workout Plan Tab -->
+        <div class="tab-content active" id="workout-tab">
+            <h3>Your Personalized Weekly Schedule</h3>
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Day</th><th>Workout Type</th><th>Exercises</th><th>Duration</th><th>Intensity</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for workout in weekly_workouts %}
+                        <tr>
+                            <td>{{ workout.day_name }}</td>
+                            <td><strong>{{ workout.get_workout_type_display }}</strong></td>
+                            <td>{{ workout.exercises|truncatechars:50 }}</td>
+                            <td>{{ workout.duration }} min</td>
+                            <td>{{ workout.intensity|capfirst }}</td>
+                            <td>
+                                {% if workout.completed %}
+                                    <span class="status active">Completed</span>
+                                {% elif workout.workout_type == 'rest' %}
+                                    <span class="status active">Rest Day</span>
+                                {% else %}
+                                    <button class="btn btn-success mark-done" data-id="{{ workout.id }}" style="padding: 5px 10px;">Mark Done</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="6">No workouts planned. Please complete the assessment to generate your plan.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-top: 30px;">Recommended For You (Based on {{ member.get_primary_goal_display|default:"your goal" }})</h3>
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>🔥 Fat Burner</h3>
+                    <div class="number">20 min</div>
+                    <p>High-intensity interval training</p>
+                    <button class="btn" style="margin-top: 10px;">Start Workout</button>
+                </div>
+                <div class="card">
+                    <h3>💪 Muscle Builder</h3>
+                    <div class="number">45 min</div>
+                    <p>Full body strength workout</p>
+                    <button class="btn" style="margin-top: 10px;">Start Workout</button>
+                </div>
+                <div class="card">
+                    <h3>🧘 Core Strength</h3>
+                    <div class="number">15 min</div>
+                    <p>Abdominal & core exercises</p>
+                    <button class="btn" style="margin-top: 10px;">Start Workout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nutrition Guide Tab -->
+        <div class="tab-content" id="nutrition-tab">
+            <h3>Personalized Nutrition Plan</h3>
+            <div class="stats-grid">
+                <div class="stat-card"><h3>Daily Calories</h3><div class="value">{{ member.daily_calories|default:"—" }}</div><p>Based on your activity level</p></div>
+                <div class="stat-card"><h3>Protein Goal</h3><div class="value">{{ member.protein_goal|default:"—" }}g</div><p>Build and repair muscle</p></div>
+                <div class="stat-card"><h3>Carbs Goal</h3><div class="value">{{ member.carbs_goal|default:"—" }}g</div><p>Energy for workouts</p></div>
+                <div class="stat-card"><h3>Fats Goal</h3><div class="value">{{ member.fats_goal|default:"—" }}g</div><p>Healthy hormone function</p></div>
+            </div>
+
+            <h3>Today's Meal Plan</h3>
+            <table class="data-table">
+                <thead><tr><th>Meal</th><th>Time</th><th>Food Items</th><th>Calories</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr><td>Breakfast</td><td>8:00 AM</td><td>Oatmeal with berries, 2 eggs, green tea</td><td>450</td><td><button class="btn btn-success btn-sm log-meal">Log</button></td></tr>
+                    <tr><td>Snack</td><td>11:00 AM</td><td>Greek yogurt, handful of almonds</td><td>200</td><td><button class="btn btn-success btn-sm log-meal">Log</button></td></tr>
+                    <tr><td>Lunch</td><td>1:00 PM</td><td>Grilled chicken breast, quinoa, broccoli</td><td>550</td><td><button class="btn btn-success btn-sm log-meal">Log</button></td></tr>
+                    <tr><td>Snack</td><td>4:00 PM</td><td>Protein shake, apple</td><td>250</td><td><button class="btn btn-success btn-sm log-meal">Log</button></td></tr>
+                    <tr><td>Dinner</td><td>7:00 PM</td><td>Salmon, sweet potato, asparagus</td><td>600</td><td><button class="btn btn-success btn-sm log-meal">Log</button></td></tr>
+                </tbody>
+            </table>
+
+            <div class="alert alert-info">
+                <strong>💡 Nutrition Tip:</strong> Based on your goal of {{ member.get_primary_goal_display|default:"weight loss" }}, focus on protein-rich foods and stay hydrated.
+            </div>
+        </div>
+
+        <!-- Progress Tracking Tab -->
+        <div class="tab-content" id="progress-tab">
+            <h3>Your Progress Overview</h3>
+            <div class="stats-grid">
+                <div class="stat-card"><h3>Weight</h3><div class="value">{{ member.weight|default:"—" }} lbs</div><p>Started: {{ member.starting_weight|default:"—" }} lbs</p><p style="color: var(--success);">-{{ weight_last_30_days|default:"0" }} lbs</p></div>
+                <div class="stat-card"><h3>Body Fat %</h3><div class="value">{{ member.body_fat|default:"—" }}%</div><p>Trend: -{{ strength_increase|default:"0" }}%</p></div>
+                <div class="stat-card"><h3>Muscle Mass</h3><div class="value">{{ member.muscle_mass|default:"—" }} lbs</div><p>+{{ strength_increase|default:"0" }} lbs</p></div>
+                <div class="stat-card"><h3>Workout Streak</h3><div class="value">{{ member.current_streak|default:"0" }} days</div><p>Best: {{ member.best_streak|default:"0" }} days</p></div>
+            </div>
+
+            <h3>Recent Workouts</h3>
+            <table class="data-table">
+                <thead><tr><th>Date</th><th>Workout Type</th><th>Duration</th><th>Calories</th><th>Rating</th></tr></thead>
+                <tbody>
+                    {% for log in recent_workouts %}
+                    <tr><td>{{ log.date|date:"Y-m-d" }}</td><td>{{ log.workout_type }}</td><td>{{ log.duration }} min</td><td>{{ log.calories }}</td><td>⭐{{ log.rating }}</td></tr>
+                    {% empty %}
+                    <tr><td colspan="5">No workouts logged yet. Start by logging a workout!</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 30px;">Weight Loss Trend (Sample Chart)</h3>
+            <div class="chart-placeholder">
+                <div style="height: 200px; display: flex; align-items: flex-end; gap: 10px; margin: 20px 0;">
+                    <div style="flex:1; background:#4CAF50; height:90%;"></div>
+                    <div style="flex:1; background:#4CAF50; height:85%;"></div>
+                    <div style="flex:1; background:#4CAF50; height:82%;"></div>
+                    <div style="flex:1; background:#4CAF50; height:78%;"></div>
+                    <div style="flex:1; background:#4CAF50; height:75%;"></div>
+                    <div style="flex:1; background:#4CAF50; height:72%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between;"><span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span><span>Week 5</span><span>Week 6</span></div>
+            </div>
+        </div>
+
+        <!-- Achievements Tab -->
+        <div class="tab-content" id="achievements-tab">
+            <h3>Your Achievements & Badges</h3>
+            <div class="dashboard-cards">
+                <div class="card"><h3>🏆 Early Bird</h3><div class="number">{{ member.current_streak|default:"0" }}</div><p>Consecutive days</p><span class="status active">In Progress</span></div>
+                <div class="card"><h3>⚡️ Streak Master</h3><div class="number">{{ member.best_streak|default:"0" }}</div><p>Best streak</p><span class="status active">Unlocked</span></div>
+                <div class="card"><h3>💪 Strength Hero</h3><div class="number">{{ member.total_workouts|default:"0" }}</div><p>Total workouts</p><span class="status active">Unlocked</span></div>
+                <div class="card"><h3>🎯 Goal Crusher</h3><div class="number">{{ member.goal_progress|default:"0" }}%</div><p>Primary goal completion</p><span class="status active">In Progress</span></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Assessment Modal (includes all health metrics) -->
+<div class="modal" id="assessmentModal">
+    <div class="modal-content" style="width: 550px;">
+        <div class="modal-header">
+            <h3>Fitness Assessment</h3>
+            <span class="close">&times;</span>
+        </div>
+        <form id="assessmentForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" class="form-control" value="{{ member.age|default:'' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="height">Height (cm)</label>
+                <input type="number" id="height" name="height" class="form-control" step="0.1" value="{{ member.height|default:'' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight (kg/lbs)</label>
+                <input type="number" id="weight" name="weight" class="form-control" step="0.1" value="{{ member.weight|default:'' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="fitnessLevel">Current Fitness Level</label>
+                <select id="fitnessLevel" name="fitness_level" class="form-control" required>
+                    <option value="">Select</option>
+                    <option value="beginner" {% if member.fitness_level == 'beginner' %}selected{% endif %}>Beginner</option>
+                    <option value="intermediate" {% if member.fitness_level == 'intermediate' %}selected{% endif %}>Intermediate</option>
+                    <option value="advanced" {% if member.fitness_level == 'advanced' %}selected{% endif %}>Advanced</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="primaryGoal">Primary Fitness Goal</label>
+                <select id="primaryGoal" name="primary_goal" class="form-control" required>
+                    <option value="">Select</option>
+                    <option value="weight_loss" {% if member.primary_goal == 'weight_loss' %}selected{% endif %}>Weight Loss</option>
+                    <option value="muscle_gain" {% if member.primary_goal == 'muscle_gain' %}selected{% endif %}>Muscle Gain</option>
+                    <option value="endurance" {% if member.primary_goal == 'endurance' %}selected{% endif %}>Endurance</option>
+                    <option value="flexibility" {% if member.primary_goal == 'flexibility' %}selected{% endif %}>Flexibility</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="workoutFrequency">Workouts per week</label>
+                <select id="workoutFrequency" name="workout_frequency" class="form-control" required>
+                    <option value="1-2" {% if member.workout_frequency == '1-2' %}selected{% endif %}>1-2 times</option>
+                    <option value="3-4" {% if member.workout_frequency == '3-4' %}selected{% endif %}>3-4 times</option>
+                    <option value="5-6" {% if member.workout_frequency == '5-6' %}selected{% endif %}>5-6 times</option>
+                    <option value="7" {% if member.workout_frequency == '7' %}selected{% endif %}>Daily</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="bodyFat">Body Fat % (optional)</label>
+                <input type="number" id="bodyFat" name="body_fat" class="form-control" step="0.1" value="{{ member.body_fat|default:'' }}">
+            </div>
+            <div class="form-group">
+                <label for="startingWeight">Starting Weight (for goal tracking)</label>
+                <input type="number" id="startingWeight" name="starting_weight" class="form-control" step="0.1" value="{{ member.starting_weight|default:'' }}">
+            </div>
+            <div class="form-group">
+                <label for="goalWeight">Goal Weight</label>
+                <input type="number" id="goalWeight" name="goal_weight" class="form-control" step="0.1" value="{{ member.goal_weight|default:'' }}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Submit Assessment</button>
+                <button type="button" class="btn btn-danger cancel-modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Goal Setting Modal -->
+<div class="modal" id="goalModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Set New Goals</h3>
+            <span class="close">&times;</span>
+        </div>
+        <form id="goalForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="goalType">Goal Type</label>
+                <select id="goalType" name="goal_type" class="form-control" required>
+                    <option value="weight">Weight Goal</option>
+                    <option value="workout">Workout Frequency</option>
+                    <option value="strength">Strength Goal</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="targetValue">Target Value</label>
+                <input type="text" id="targetValue" name="target_value" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="deadline">Deadline</label>
+                <input type="date" id="deadline" name="deadline" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Set Goal</button>
+                <button type="button" class="btn btn-danger cancel-modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Log Workout Modal -->
+<div class="modal" id="workoutModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Log Your Workout</h3>
+            <span class="close">&times;</span>
+        </div>
+        <form id="workoutLogForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="workoutType">Workout Type</label>
+                <select id="workoutType" name="workout_type" class="form-control" required>
+                    <option value="cardio">Cardio</option>
+                    <option value="strength">Strength Training</option>
+                    <option value="yoga">Yoga</option>
+                    <option value="hiit">HIIT</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="duration">Duration (minutes)</label>
+                <input type="number" id="duration" name="duration" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="calories">Calories Burned</label>
+                <input type="number" id="calories" name="calories" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="intensity">Intensity Level</label>
+                <select id="intensity" name="intensity" class="form-control" required>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rating">Rating (1-5)</label>
+                <select id="rating" name="rating" class="form-control">
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Good</option>
+                    <option value="3">3 - Average</option>
+                    <option value="2">2 - Poor</option>
+                    <option value="1">1 - Very Poor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes (optional)</label>
+                <textarea id="notes" name="notes" class="form-control" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Log Workout</button>
+                <button type="button" class="btn btn-danger cancel-modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- View Progress Modal (Detailed stats) -->
+<div class="modal" id="progressModal">
+    <div class="modal-content" style="width: 700px;">
+        <div class="modal-header">
+            <h3>Detailed Progress Report</h3>
+            <span class="close">&times;</span>
+        </div>
+        <div style="max-height: 500px; overflow-y: auto;">
+            <h4>Last 30 Days Summary</h4>
+            <table class="data-table">
+                <tr><td><strong>Total Workouts:</strong></td><td>{{ workouts_last_30_days|default:"0" }}</td></tr>
+                <tr><td><strong>Total Calories Burned:</strong></td><td>{{ calories_last_30_days|default:"0" }}</td></tr>
+                <tr><td><strong>Weight Change:</strong></td><td style="color: var(--success);">-{{ weight_last_30_days|default:"0" }} lbs</td></tr>
+                <tr><td><strong>Strength Increase:</strong></td><td style="color: var(--success);">+{{ strength_increase|default:"0" }}%</td></tr>
+                <tr><td><strong>Consistency Rate:</strong></td><td>{{ consistency_rate|default:"0" }}%</td></tr>
+            </table>
+            <h4 style="margin-top: 20px;">Trainer Feedback</h4>
+            <p>{{ trainer_feedback|default:"Great progress! Keep up the consistency. Focus on increasing your protein intake for better recovery." }}</p>
+            <h4>Next Milestones</h4>
+            <ul>
+                <li>🎯 Complete 5 more workouts to reach 30 total</li>
+                <li>🏆 Burn 1,550 more calories to hit 10,000</li>
+                <li>💪 Increase weight on deadlifts by 10 lbs</li>
+            </ul>
+        </div>
+        <div class="form-group" style="margin-top: 20px;">
+            <button class="btn btn-success" onclick="closeModal('progressModal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Modal handling
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'block';
+    }
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Close modals via close button or cancel button
+    document.querySelectorAll('.close, .cancel-modal').forEach(el => {
+        el.addEventListener('click', function() {
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        });
+    });
+
+    // Tabs switching
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const tabId = this.getAttribute('data-tab');
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId + '-tab').classList.add('active');
+        });
+    });
+
+    // AJAX helper
+    async function submitForm(url, formData, modalId, successMsg) {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+        });
+        const data = await response.json();
+        if (data.success) {
+            alert(successMsg || data.message);
+            if (modalId) closeModal(modalId);
+            location.reload();  // reload to reflect updated data
+        } else {
+            alert('Error: ' + (data.message || JSON.stringify(data.errors)));
+        }
+    }
+
+    // Assessment form submit
+    document.getElementById('assessmentForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        submitForm("{% url 'assessment_submit' %}", formData, 'assessmentModal', 'Assessment submitted! Your plan has been updated.');
+    });
+
+    // Goal form submit
+    document.getElementById('goalForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        submitForm("{% url 'goal_submit' %}", formData, 'goalModal', 'Goal set successfully!');
+    });
+
+    // Workout log submit
+    document.getElementById('workoutLogForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        submitForm("{% url 'workout_log_submit' %}", formData, 'workoutModal', 'Workout logged! Keep going! 💪');
+    });
+
+    // Mark workout as done
+    document.querySelectorAll('.mark-done').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const workoutId = this.dataset.id;
+            const response = await fetch(`/mark-workout-done/${workoutId}/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (data.success) location.reload();
+        });
+    });
+</script>
+
+<style>
+    /* Additional inline styles for better appearance (optional) */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+    .modal-content { background-color: white; margin: 5% auto; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
+    .close { cursor: pointer; font-size: 28px; font-weight: bold; }
+    .form-group { margin-bottom: 15px; }
+    .form-control { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th, .data-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    .data-table th { background-color: #f2f2f2; }
+    .status.active { color: green; font-weight: bold; }
+    .dashboard-cards, .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
+    .card, .stat-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+    .number { font-size: 32px; font-weight: bold; color: #4CAF50; }
+    .tabs { display: flex; gap: 10px; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
+    .tab { padding: 10px 20px; cursor: pointer; }
+    .tab.active { border-bottom: 2px solid #4CAF50; font-weight: bold; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .btn-success { background-color: #4CAF50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+    .btn-danger { background-color: #f44336; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+    .alert-info { background: #e8f4fd; padding: 15px; border-radius: 8px; margin-top: 20px; }
+    .sidebar { width: 260px; background: #f4f4f4; padding: 20px; }
+    .main-content { display: flex; }
+    .content { flex: 1; padding: 20px; }
+    .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+</style>
+{% endblock %}
