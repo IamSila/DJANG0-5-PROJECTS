@@ -1,6 +1,6 @@
 from .forms import LoginForm
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -16,12 +16,12 @@ def user_login(request):
       if user is not None:
         if user.is_active:
           login(request, user)
-          return HttpResponse('User Authenticated successfully')
+          return JsonResponse({"status": "success", "message": "Action completed."})
         else:
-          return HttpResponse('User account is deactivated')
-    else:
-      form = LoginForm()
+          return JsonResponse({"status": "404 Error", "message": "User Deactivated."})
+  else:
+    form = LoginForm()
 
-    context = {'form': form}
-    return render(request, 'account/login.html', context)
+  context = {'form': form}
+  return render(request, 'accounts/login.html', context)
 
