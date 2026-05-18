@@ -29,5 +29,5 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-  context = {'section': dashboard}
+  context = {'section': dashboard }
   return render(request, 'accounts/dashboard.html', context)
