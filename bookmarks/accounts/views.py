@@ -46,7 +46,7 @@ def register(request):
   else:
     user_form = UserRegistrationForm()
   context = {'user_form': user_form}
-  return render(request, 'account/register.html', context)
+  return render(request, 'accounts/register.html', context)
 
 
 
