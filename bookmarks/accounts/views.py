@@ -1,4 +1,4 @@
-from .forms import LoginForm
+from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
@@ -31,3 +31,22 @@ def user_login(request):
 def dashboard(request):
   context = {'section': dashboard }
   return render(request, 'accounts/dashboard.html', context)
+
+
+
+def register(request):
+  if request.method == 'POST':
+    user_form = UserRegistrationForm(request.POST)
+    if user_form.is_valid():
+      # create new user object but I avoid saving it
+      new_user = user_form.save(commit=False)
+      # this set_password is for security: it converts pass to hash
+      new_user.set_password(user_form.cleaned_data['password'])
+      new_user.save()
+  else:
+    user_form = UserRegistrationForm()
+  context = {'user_form': user_form}
+  return render(request, 'account/register.html', context)
+
+
+
