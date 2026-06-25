@@ -1,0 +1,54 @@
+:root {
+  --black: #111111;
+  --near-black: #1b1b1b;
+  --lime: #baec17;
+  --light: #e4e4e4;
+  --mid: #888;
+  --faint: #2c2c2c;
+  --faint2: #242424;
+}
+
+
+.list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--mid);
+}
+
+
+.list-heading h2 {
+  color: var(--light);
+  font-size: 40px;
+  font-weight: 800;
+  padding-bottom: 10px;
+  line-height: 1.4px;
+
+}
+
+.list-heading h2 span {
+  color: var(--lime);
+}
+
+.list-heading ul {
+  display: flex;
+  justify-content: space-evenly;
+}
+.list-heading li {
+  padding: 5px;
+  list-style: none;
+}
+
+
+/* post box */
+.post {
+
+}
+
+.post .post-heading a {
+  color: var(--light);
+}
+
+.post .post-heading a:hover {
+  color: var(--lime);
+}

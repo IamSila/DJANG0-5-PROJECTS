@@ -1,7 +1,21 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: helvetica, sans-serif;
+:root {
+  --black: #111111;
+  --near-black: #1b1b1b;
+  --lime: #baec17;
+  --light: #e4e4e4;
+  --mid: #888;
+  --faint: #2c2c2c;
+  --faint2: #242424;
+}
+
+
+
+body{
+  font-family:'Inter',sans-serif;
+  background-color: var(--near-black);
+  /* color:var(--light); */
+  line-height:1.7;
+  min-height:100vh;
 }
 
 a {
@@ -24,6 +38,7 @@ h2 {
     float: left;
     width: 60%;
     padding: 0 0 0 30px;
+    border-right: 1px solid var(--mid);
 }
 
 #sidebar {

@@ -6,6 +6,9 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+        {% block css %}
+        
+        {% endblock css  %}
     </head>
     <body>
         <div id="content">
