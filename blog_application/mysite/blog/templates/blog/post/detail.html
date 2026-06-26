@@ -1,13 +1,58 @@
 {% extends "blog/base.html" %}
+{% load static %}
 {% load blog_tags %}
 
 {% block title %}{{ post.title }}{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/detail.css' %}">
+{% endblock css%}
 {% block content %}
-    <h1>{{ post.title }}</h1><p class="date">
-        Published {{ post.publish }} by {{ post.author }}
-    </p>
+    <div class="post-heading">
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="post-meta">
+            <div class="post-meta-item">
+              <span class="label">Published</span>
+              <span>{{ post.publish|date:"M d, Y" }}</span>
+            </div>
+            <div class="post-meta-sep"></div>
+            <div class="post-meta-item">
+              <span class="label">By</span>
+              <span>{{post.author}}</span>
+            </div>
+            <div class="post-meta-sep"></div>
+            <div class="post-meta-item">
+              <span>{{ post.publish|date:"g:i a" }}</span>
+            </div>
+            <div class="post-meta-sep"></div>
+            <div class="post-meta-item">
+              <span>5 min read</span>
+            </div>
+          </div>
+    </div>
+
     {{ post.body|markdown }}
-    <p><a href="{% url 'blog:post_share' post.id %}">Share this post</a></p>
+
+    <div class="share-strip">
+          <span class="share-label">Share</span>
+          <a href="{% url 'blog:post_share' post.id %}" class="share-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.910 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" fill="currentColor"/>
+            </svg>
+            Gmail
+          </a>
+          <a href="https://x.com" class="share-btn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X / Twitter
+          </a>
+          <a href="https://linkedin.com" class="share-btn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href="#" class="share-btn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            Copy link
+          </a>
+        </div>
 
     <h2>Similar posts</h2>
     {% for post in similar_posts %}
