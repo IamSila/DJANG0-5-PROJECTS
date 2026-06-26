@@ -1,8 +1,39 @@
-<h2>Add a new comment</h2>
+{% load static %}
 
-<form action="{% url 'blog:post_comment' post.id %}" method="post">
-  {{ form.as_p }}
-  {% csrf_token %}
+<!-- <form action= method="post">
   <p><input type="submit" value="Add comment"></p>
-</form>
+</form> -->
 
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/comment_form.css' %}">
+{% endblock css %}
+
+<!-- Comment form -->
+<form class="comment-form" method="POST" action="{% url 'blog:post_comment' post.id %}">
+  {% csrf_token %}
+  <div class="form-header">
+    <span class="form-prompt">$&gt;&nbsp;</span>
+    <span class="form-prompt-label">Add a comment</span>
+  </div>
+
+  <div class="form-row">
+    <div class="form-field">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your name" autocomplete="off" value="{{form.name.value|default:''}}"/>
+    </div>
+    <div class="form-field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="off" value="{{form.email.value|default:''}}"/>
+    </div>
+  </div>
+
+  <div class="form-field full">
+    <label for="body">Comment</label>
+    <textarea id="body" name="body" placeholder="Write your comment here…">{{form.body.value|default:''}}</textarea>
+  </div>
+
+  <button class="form-submit" type="submit">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    Post comment
+  </button>
+</form>
