@@ -1,36 +1,33 @@
-{% load blog_tags %}
-{% load static %}
+{% load blog_tags %} {% load static %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>{% block title %}{% endblock %}</title>
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
-        <link href="{% static 'css/blog.css' %}" rel="stylesheet">
-        {% block css %}
-        
-        {% endblock css  %}
-    </head>
-    <body>
-        <div id="content">
-            {% block content %}
-            {% endblock %}
-        </div>
-        <div id="sidebar">
-            <h2>My blog</h2>
-            <p>This is my blog.</p>
-            <p>I've written {% total_posts %} so far</p>
-            <h3>Latest posts</h3>
-            {% show_latest_posts 5 %}
-            <h3>Most Commented Posts</h3>
-            {% get_most_commented_posts as most_commented_posts %}
-            <ul>
-                {% for post in most_commented_posts %}
-                    <li>
-                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </body>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="{% static 'css/blog.css' %}" rel="stylesheet" />
+    {% block css %} {% endblock css %}
+  </head>
+  <body>
+    <div id="content">{% block content %} {% endblock %}</div>
+    <div id="sidebar">
+      <h2>My blog</h2>
+      <p>This is my blog.</p>
+      <p>I've written {% total_posts %} so far</p>
+      <h3>Latest posts</h3>
+      {% show_latest_posts 5 %}
+      <h3>Most Commented Posts</h3>
+      {% get_most_commented_posts as most_commented_posts %}
+      <ul>
+        {% for post in most_commented_posts %}
+        <li>
+          <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </body>
 </html>
