@@ -1,3 +1,6 @@
+@import url('https://googleapis.com');
+
+
 :root {
   --black: #111111;
   --near-black: #1b1b1b;
@@ -38,7 +41,7 @@ h2 {
     float: left;
     width: 60%;
     padding: 0 0 0 30px;
-    border-right: 1px solid var(--mid);
+    /* border-right: 1px solid var(--mid); */
 }
 
 #sidebar {
