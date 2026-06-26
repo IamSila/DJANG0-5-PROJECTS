@@ -47,10 +47,137 @@ h2 {
 #sidebar {
     float: right;
     width: 30%;
-    padding: 10px;
-    background: #efefef;
+    padding-left: 2rem;
     height: 100%;
+    border-left: 1px solid var(--faint);
 }
+
+#sidebar .sidebar-title {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--faint);
+}
+
+.sidebar-bio {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--mid);
+    margin-bottom: 1.25rem;
+}
+
+#sidebar .stat {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 0.25rem;
+    margin-bottom: 3rem;
+}
+
+#sidebar .stat .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--lime);
+    line-height: 1;
+}
+
+#sidebar .stat .stat-label {
+    font-size: 12px;
+    color: var(--mid);
+    letter-spacing: 1px;
+}
+
+#sidebar .stat .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--lime);
+    line-height: 1;
+}
+
+
+#sidebar .latest-posts li{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar .latest-posts ul li a {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--mid);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--faint);
+    text-decoration: none;
+    transition: color 0.15s;
+    line-height: 1.4;
+}
+
+#sidebar .latest-posts li a:hover {
+    color: var(--lime);
+}
+
+#sidebar .latest-posts ul li a::before {
+    content: '→';
+    color: var(--faint);
+    font-size: 11px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    transition: color 0.15s;
+}
+
+
+#sidebar .latest-posts ul li a:hover::before {
+    color: var(--lime);
+}
+
+
+
+
+#sidebar .commented-posts li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar .commented-posts ul li a {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--mid);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--faint);
+    text-decoration: none;
+    transition: color 0.15s;
+    line-height: 1.4;
+}
+
+#sidebar .commented-posts li a:hover {
+    color: var(--lime);
+}
+
+#sidebar .commented-posts ul li a::before {
+    content: '→';
+    color: var(--faint);
+    font-size: 11px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    transition: color 0.15s;
+}
+
+
+#sidebar .commented-posts ul li a:hover::before {
+    color: var(--lime);
+}
+
 
 p.date {
     color: #ccc;
