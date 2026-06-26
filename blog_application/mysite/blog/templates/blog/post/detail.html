@@ -54,15 +54,31 @@
           </a>
         </div>
 
-    <h2>Similar posts</h2>
-    {% for post in similar_posts %}
-        <p>
-            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-        </p>
-        {% empty %}
-            There are no similar posts yet.
-    {% endfor %}
 
+        <div class="similar-posts">
+            <div class="similar-posts-header">
+                <span class="similar-post-title">Similar posts</span>
+                <span class="section-count">// {{total_similar_posts}} found</span>
+            </div>
+
+            <div class="similar-post-item">
+                {% for post in similar_posts %}
+                    <div class="sim-title">
+                        <span class="sim-num">{{forloop.counter}}</span>
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </div>
+                <div class="sim-meta">
+                    {{post.publish|date:"M d, Y"}} · {{post.tag}}
+                </div>
+            
+                {% empty %}
+                    <div class="zero-similar-posts">
+                        There are no similar posts yet.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+          
 
     <section class="section">
           <div class="section-header">
@@ -77,11 +93,13 @@
                 <p class="info">
                     Comment {{ forloop.counter }} by {{ comment.name }} {{ comment.created }}
                 </p>
-            {{ comment.body|linebreaks }}
-        </div>
-        {% empty %}
-            <p>No comments yet. Be the first to comment.</p>
-    {% endfor %}
+                {{ comment.body|linebreaks }}
+            </div>
+            {% empty %}
+                <div class="zero-comments">
+                    No comments yet. Be the first to comment.
+                </div>
+        {% endfor %}
     {% include "blog/post/includes/comment_form.html" %}
 
           
