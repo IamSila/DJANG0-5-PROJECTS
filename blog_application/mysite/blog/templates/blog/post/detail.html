@@ -30,7 +30,10 @@
           </div>
     </div>
 
-    {{ post.body|markdown }}
+    <div class="post-body">
+        {{ post.body|markdown }}
+    </div>
+    
 
     <div class="share-strip">
           <span class="share-label">Share</span>
@@ -93,7 +96,9 @@
                 <p class="info">
                     Comment {{ forloop.counter }} by {{ comment.name }} {{ comment.created }}
                 </p>
-                {{ comment.body|linebreaks }}
+                <div class="comment-body">
+                    {{ comment.body|linebreaks }}
+                </div>
             </div>
             {% empty %}
                 <div class="zero-comments">

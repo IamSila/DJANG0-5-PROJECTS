@@ -65,6 +65,32 @@
     background: var(--faint);
 }
 
+.post-body {
+    color: var(--mid);
+}
+
+.post-body h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    color: var(--light);
+}
+
+.post-body pre {
+    background-color: var(--black);
+    padding: 10px;
+    border-left: 2px solid var(--lime);
+    border-radius: 2px;
+}
+
+.post-body span {
+    color: var(--lime);
+    background: var(--faint);
+    padding: 1px 5px;
+    border: none;
+    border-radius: 3px;
+}
+
+
 /* share section */
 .share-strip {
     display: flex;
@@ -241,9 +267,9 @@
     padding: 1rem 0;
 }
 
-.comment-item {
-    padding: 1.25rem 0;
-    border-bottom: 1px solid var(--faint);
+.comment {
+    border-left: 3px solid var(--lime);
+    border-radius: 3px;
 }
 
 .comment-header {
@@ -267,10 +293,30 @@
     flex-shrink: 0;
 }
 
+.comment .info {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--mid);
+    font-style: italic;
+    padding: 1px;
+    margin: 3px;
+    margin-left: 10px;
+}
+
+.comment:nth-child(even) .info {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--mid);
+    font-style: italic;
+    padding: 1px;
+    margin: 3px;
+    margin-left: 10px;
+}
+
 .comment-name {
     font-size: 13px;
     font-weight: 500;
-    color: var(--light);
+    color: var(--mid);
 }
 
 .comment-date {
@@ -279,13 +325,21 @@
     margin-left: auto;
 }
 
+
+
 .comment-body {
     font-size: 14px;
     line-height: 1.75;
-    color: #aaa;
+    color: var(--light);
     padding-left: 38px;
 }
 
 
+
+
+
+.comment:nth-child(even) {
+    background-color: var(--black);
+}
 
 
